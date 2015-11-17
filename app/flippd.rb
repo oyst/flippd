@@ -2,6 +2,7 @@ require 'dotenv'
 Dotenv.load
 
 require_relative 'db/init'
+require_relative 'handlers/init'
 
 require 'sinatra'
 require 'sinatra/multi_route'

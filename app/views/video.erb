@@ -44,6 +44,11 @@
 </div>
 <% end %>
 
+<% @comments.each do |comment| %>
+  <li style="padding: 3px 0">
+    <%=comment["text"]%>
+  </li>
+<% end %>
 <script>
   // 2. This code loads the IFrame Player API code asynchronously.
   var tag = document.createElement('script');

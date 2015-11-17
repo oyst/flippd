@@ -45,6 +45,7 @@ class Flippd < Sinatra::Application
           if video["id"] == params['id'].to_i
             @phase = phase
             @video = video
+	    @comments = CommentHandler.get_by_video_id(video["id"])
           end
         end
       end
