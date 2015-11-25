@@ -82,7 +82,7 @@ module CommentSystem
       if @@comments[parent_id].nil?
         return []
       end
-      @@comments[parent_id][start, start+max]
+      @@comments[parent_id][start, max]
     end
 
     def count(parent_id: nil)
@@ -103,13 +103,13 @@ module CommentSystem
       @@comments[parent_id] << comment
     end
 
-    def self.generate_comments(depth:)
+    def self.generate_nested_replies(depth:)
       self.clear_comments
 
       user = User.new(id: 1,
                       name: "User",
                       email: "user@mail.com")
-      for d in 0..depth
+      for d in 0..depth-1
         comment = Comment.new(id: d,
                               message: "message_#{d}",
                               user: user,
@@ -117,7 +117,22 @@ module CommentSystem
                               creation_date: "19/02/15")
         self.add_comment(comment, (d == 0) ? nil : d-1)
       end
+    end
 
+    def self.generate_replies(count:)
+      self.clear_comments
+
+      user = User.new(id: 1,
+                      name: "User",
+                      email: "user@mail.com")
+      for c in 0..count-1
+        comment = Comment.new(id: c,
+                              message: "message_#{c}",
+                              user: user,
+                              reply_count: 0,
+                              creation_date: "19/02/15")
+        self.add_comment(comment, nil)
+      end
     end
   end
 
