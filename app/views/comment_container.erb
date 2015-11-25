@@ -1,26 +1,30 @@
-<div class="comment-container">
-  <div class="comment-header">
-    <span class="comment-poster"> <%=comment.user.name%> </span>
-    <span class="comment-date"> <%=comment.creation_date%> </span>
-  </div>
-  <div class="comment-body">
-    <p class="comment-text">
-      <%=comment.message%>
-    </p>
-    <a href="<%="##{comment.id}"%>"> Reply </a>
-  </div>
-  <% if comment.reply_count > 0 %>
-    <div class="comment-replies">
-      <% if depth < CommentSystem::MAX_REPLY_DEPTH %>
-        <% @commentProvider.get_comments(start: 0, max: CommentSystem::MAX_REPLY_COUNT, parent_id: comment.id).each do |reply| %>
-          <%= erb :comment_container, :locals => {:comment => reply, :depth => depth + 1} %>
-        <% end %>
-        <% if @commentProvider.count(parent_id: comment.id) > CommentSystem::MAX_REPLY_COUNT %>
-          <a href=""> Show more comments </a>
-        <% end %>
-      <% else %>
-        <a href=""> Show deeper replies </a>
+<% if depth < CommentSystem::MAX_REPLY_DEPTH %>
+  <% @commentProvider.get_comments(start: 0, max: CommentSystem::MAX_REPLY_COUNT, parent_id: parent_id).each do |comment| %>
+
+    <div class="comment-container">
+      <div class="comment-header">
+        <span class="comment-poster"> <%=comment.user.name%> </span>
+        <span class="comment-date"> <%=comment.creation_date%> </span>
+      </div>
+      <div class="comment-body">
+        <p class="comment-text">
+          <%=comment.message%>
+        </p>
+        <a href="<%="##{comment.id}"%>"> Reply </a>
+      </div>
+      <% if comment.reply_count > 0 %>
+        <div class="comment-replies">
+          <%= erb :comment_container, :locals => {:parent_id => comment.id, :depth => depth + 1} %>
+        </div>
       <% end %>
     </div>
+
+  <%end%>
+
+  <% if @commentProvider.count(parent_id: parent_id) > CommentSystem::MAX_REPLY_COUNT %>
+    <a href=""> Show more comments </a>
   <% end %>
-</div>
+
+<% else %>
+  <a href=""> Show deeper replies </a>
+<% end %>

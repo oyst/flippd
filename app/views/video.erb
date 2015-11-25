@@ -48,9 +48,9 @@
 <div id="comments" class="row" style="margin-top: 1.5em;">
   <h4>Comments</h4>
 
-  <% if @commentProvider.get_comments(start: 0, max: 20, parent_id: nil).each do |comment| %>
-    <%= erb :comment_container, :locals => {:comment => comment, :depth => 1} %>
-  <% end.empty? %>
+  <% if @commentProvider.count(parent_id: nil) > 0 %>
+    <%= erb :comment_container, :locals => {:depth => 0, :parent_id => nil} %>
+  <% else %>
     <p> No comments yet </p>
   <% end %>
 
