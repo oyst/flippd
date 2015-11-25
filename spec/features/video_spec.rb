@@ -46,7 +46,8 @@ feature "A video page" do
 
   context "with no comments" do
     before do
-      use_comment_provider(CommentSystem::EmptyStubCommentProvider)
+      CommentSystem::StubCommentProvider.show_comments = false
+      use_comment_provider(CommentSystem::StubCommentProvider)
     end
 
     it "tells the user there are no comments" do
@@ -58,6 +59,7 @@ feature "A video page" do
 
   context "with comments" do
     before do
+      CommentSystem::StubCommentProvider.show_comments = true
       use_comment_provider(CommentSystem::StubCommentProvider)
     end
 
