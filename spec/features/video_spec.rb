@@ -46,7 +46,7 @@ feature "A video page" do
 
   context "with no comments" do
     before do
-      CommentSystem::StubCommentProvider.show_comments = false
+      CommentSystem::StubCommentProvider.clear_comments
       use_comment_provider(CommentSystem::StubCommentProvider)
     end
 
@@ -59,7 +59,17 @@ feature "A video page" do
 
   context "with comments" do
     before do
-      CommentSystem::StubCommentProvider.show_comments = true
+
+      user = CommentSystem::User.new(1, "User", "user1@mail.com")
+      c1 = CommentSystem::Comment.new(1, "foo", user, 1, "19/02/15")
+      c2 = CommentSystem::Comment.new(2, "bar", user, 1, "23/10/15")
+      c3 = CommentSystem::Comment.new(3, "baz", user, 0, "25/11/15")
+
+      CommentSystem::StubCommentProvider.clear_comments
+      CommentSystem::StubCommentProvider.add_comment(c1, nil)
+      CommentSystem::StubCommentProvider.add_comment(c2, 1)
+      CommentSystem::StubCommentProvider.add_comment(c3, 2)
+
       use_comment_provider(CommentSystem::StubCommentProvider)
     end
 
@@ -70,13 +80,32 @@ feature "A video page" do
     end
 
     it "contains correct information in first comment" do
-      within first("#comments .comment-container") do
-        expect(page).to have_content "User1"
-        expect(page).to have_content "19/02/95"
-        expect(page).to have_content "Hello world!"
+      within "#comments" do
+        expect(page).to have_content "User"
+        expect(page).to have_content "19/02/15"
+        expect(page).to have_content "foo"
         expect(page).to have_link "Reply"
       end
     end
+
+    it "contains a nested comment" do
+      within "#comments" do
+        expect(page).to have_content "User"
+        expect(page).to have_content "23/10/15"
+        expect(page).to have_content "bar"
+        expect(page).to have_link "Reply"
+      end
+    end
+
+    it "contains a double nested comment" do
+      within "#comments" do
+        expect(page).to have_content "User"
+        expect(page).to have_content "25/11/15"
+        expect(page).to have_content "baz"
+        expect(page).to have_link "Reply"
+      end
+    end
+
   end
 
 end
