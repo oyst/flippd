@@ -59,17 +59,7 @@ feature "A video page" do
 
   context "with comments" do
     before do
-
-      user = CommentSystem::User.new(1, "User", "user1@mail.com")
-      c1 = CommentSystem::Comment.new(1, "foo", user, 1, "19/02/15")
-      c2 = CommentSystem::Comment.new(2, "bar", user, 1, "23/10/15")
-      c3 = CommentSystem::Comment.new(3, "baz", user, 0, "25/11/15")
-
-      CommentSystem::MockCommentProvider.clear_comments
-      CommentSystem::MockCommentProvider.add_comment(c1, nil)
-      CommentSystem::MockCommentProvider.add_comment(c2, 1)
-      CommentSystem::MockCommentProvider.add_comment(c3, 2)
-
+      CommentSystem::MockCommentProvider.generate_comments(depth: 1)
       use_comment_provider(CommentSystem::MockCommentProvider)
     end
 
@@ -79,30 +69,80 @@ feature "A video page" do
       end
     end
 
-    it "contains correct information in first comment" do
+    it "contains the right info" do
       within "#comments" do
         expect(page).to have_content "User"
         expect(page).to have_content "19/02/15"
-        expect(page).to have_content "foo"
+        expect(page).to have_content "message_0"
         expect(page).to have_link "Reply"
       end
     end
 
-    it "contains a nested comment" do
-      within "#comments" do
-        expect(page).to have_content "User"
-        expect(page).to have_content "23/10/15"
-        expect(page).to have_content "bar"
-        expect(page).to have_link "Reply"
+    context "at max depth" do
+      before do
+        CommentSystem::MockCommentProvider.generate_comments(depth: CommentSystem::MAX_REPLY_DEPTH)
+        use_comment_provider(CommentSystem::MockCommentProvider)
+      end
+
+      it "contains the first comment" do
+        within "#comments" do
+          expect(page).to have_content "message_0"
+        end
+      end
+
+      it "contains the 2nd comment" do
+        within "#comments" do
+          expect(page).to have_content "message_2"
+        end
+      end
+
+      it "contains the last comment" do
+        within "#comments" do
+          expect(page).to have_content "message_#{CommentSystem::MAX_REPLY_DEPTH - 1}"
+        end
+      end
+
+      it "does not contain the deeper comments link" do
+        within "#comments" do
+          expect(page).to_not have_link "Show deeper replies"
+        end
       end
     end
 
-    it "contains a double nested comment" do
-      within "#comments" do
-        expect(page).to have_content "User"
-        expect(page).to have_content "25/11/15"
-        expect(page).to have_content "baz"
-        expect(page).to have_link "Reply"
+    context "past max depth" do
+      before do
+        CommentSystem::MockCommentProvider.generate_comments(depth: CommentSystem::MAX_REPLY_DEPTH + 1)
+        use_comment_provider(CommentSystem::MockCommentProvider)
+      end
+
+      it "contains the first comment" do
+        within "#comments" do
+          expect(page).to have_content "message_0"
+        end
+      end
+
+      it "contains the 2nd comment" do
+        within "#comments" do
+          expect(page).to have_content "message_2"
+        end
+      end
+
+      it "contains the second to last comment" do
+        within "#comments" do
+          expect(page).to have_content "message_#{CommentSystem::MAX_REPLY_DEPTH - 1}"
+        end
+      end
+
+      it "does no contain the last comment" do
+        within "#comments" do
+          expect(page).to_not have_content "message_#{CommentSystem::MAX_REPLY_DEPTH}"
+        end
+      end
+
+      it "contains the deeper comments link" do
+        within "#comments" do
+          expect(page).to have_link "Show deeper replies"
+        end
       end
     end
 

@@ -11,8 +11,15 @@
   </div>
   <% if comment.reply_count > 0 %>
     <div class="comment-replies">
-      <% @commentProvider.get_comments(start: 0, max: 20, parent_id: comment.id).each do |reply| %>
-        <%= erb :comment_container, :locals => {:comment => reply, :depth => depth + 1} %>
+      <% if depth < CommentSystem::MAX_REPLY_DEPTH %>
+        <% @commentProvider.get_comments(start: 0, max: CommentSystem::MAX_REPLY_COUNT, parent_id: comment.id).each do |reply| %>
+          <%= erb :comment_container, :locals => {:comment => reply, :depth => depth + 1} %>
+        <% end %>
+        <% if @commentProvider.count(parent_id: comment.id) > CommentSystem::MAX_REPLY_COUNT %>
+          <a href=""> Show more comments </a>
+        <% end %>
+      <% else %>
+        <a href=""> Show deeper replies </a>
       <% end %>
     </div>
   <% end %>

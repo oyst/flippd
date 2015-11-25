@@ -3,7 +3,7 @@ module CommentSystem
   class User
     attr_accessor :id, :name, :email
 
-    def initialize(id, name, email)
+    def initialize(id:, name:, email:)
       @id = id
       @name = name
       @email = email
@@ -13,7 +13,7 @@ module CommentSystem
   class Comment
     attr_accessor :id, :message, :user, :reply_count, :creation_date
 
-    def initialize(id, message, user, reply_count, creation_date)
+    def initialize(id:, message:, user:, reply_count:, creation_date:)
       @id = id
       @message = message
       @user = user
@@ -24,19 +24,19 @@ module CommentSystem
 
   class StubCommentProvider
     def initialize(forum_id, thread_id, test_mode = false)
-        user1 = User.new(1, "User1", "user1@mail.com")
-        user2 = User.new(2, "User2", "user2@mail.com")
-        user3 = User.new(3, "User3", "user3@mail.com")
-        user4 = User.new(4, "User4", "user4@mail.com")
+        user1 = User.new(id:1, name:"User1", email:"user1@mail.com")
+        user2 = User.new(id:2, name:"User2", email:"user2@mail.com")
+        user3 = User.new(id:3, name:"User3", email:"user3@mail.com")
+        user4 = User.new(id:4, name:"User4", email:"user4@mail.com")
 
         @comments = {nil => [], 1 => [], 3 => [], 5 => []}
-        @comments[nil] << Comment.new(1, "Hello world!", user1, 2, "19/02/95")
-        @comments[nil] << Comment.new(2, "Test comment", user2, 0, "14/06/15")
-        @comments[1] << Comment.new(3, "foo", user3, 1, "23/10/93")
-        @comments[1] << Comment.new(4, "bar", user3, 0, "24/10/15")
-        @comments[3] << Comment.new(5, "baz", user1, 0, "12/02/16")
-        @comments[nil] << Comment.new(5, "Parent", user4, 1, "15/04/13")
-        @comments[5] << Comment.new(6, "Child", user2, 0, "11/05/13")
+        @comments[nil] << Comment.new(id:1, message:"Hello world!", user:user1, reply_count:2, creation_date:"19/02/95")
+        @comments[nil] << Comment.new(id:2, message:"Test comment", user:user2, reply_count:0, creation_date:"14/06/15")
+        @comments[1] << Comment.new(id:3, message:"foo", user:user3, reply_count:1, creation_date:"23/10/93")
+        @comments[1] << Comment.new(id:4, message:"bar", user:user3, reply_count:0, creation_date:"24/10/15")
+        @comments[3] << Comment.new(id:5, message:"baz", user:user1, reply_count:0, creation_date:"12/02/16")
+        @comments[nil] << Comment.new(id:5, message:"Parent", user:user4, reply_count:1, creation_date:"15/04/13")
+        @comments[5] << Comment.new(id:6, message:"Child", user:user2, reply_count:0, creation_date:"11/05/13")
     end
 
     def create(user_id, message, reply_id: nil)
@@ -102,9 +102,29 @@ module CommentSystem
       end
       @@comments[parent_id] << comment
     end
+
+    def self.generate_comments(depth:)
+      self.clear_comments
+
+      user = User.new(id: 1,
+                      name: "User",
+                      email: "user@mail.com")
+      for d in 0..depth
+        comment = Comment.new(id: d,
+                              message: "message_#{d}",
+                              user: user,
+                              reply_count: (d == depth-1) ? 0 : 1,
+                              creation_date: "19/02/15")
+        self.add_comment(comment, (d == 0) ? nil : d-1)
+      end
+
+    end
   end
 
-  @provider = StubCommentProvider
+
+  MAX_REPLY_DEPTH = 10
+  MAX_REPLY_COUNT = 20
+  @provider = MockCommentProvider
 
   def self.get_provider(forum_id, thread_id, test_mode: false)
     return @provider.new(forum_id, thread_id, test_mode)
