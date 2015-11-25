@@ -1,5 +1,7 @@
 feature "A video page" do
-  before(:each) { visit('/videos/2') }
+  before(:each) do ||
+     visit('/videos/2')
+  end
 
   it "contains the video's title" do
     within('#main h1') do
@@ -35,4 +37,44 @@ feature "A video page" do
       expect(page).to have_link 'Middleware', href: "/videos/30"
     end
   end
+
+  it "contains a comments section" do
+    within "#comments" do
+      expect(page).to have_content "Comments"
+    end
+  end
+
+  context "with no comments" do
+    before do
+      use_comment_provider(CommentSystem::EmptyStubCommentProvider)
+    end
+
+    it "tells the user there are no comments" do
+      within "#comments" do
+        expect(page).to have_content "No comments yet"
+      end
+    end
+  end
+
+  context "with comments" do
+    before do
+      use_comment_provider(CommentSystem::StubCommentProvider)
+    end
+
+    it "does not tell the user there are no comments" do
+      within "#comments" do
+        expect(page).to_not have_content "No comments yet"
+      end
+    end
+
+    it "contains correct information in first comment" do
+      within first("#comments .comment-container") do
+        expect(page).to have_content "User1"
+        expect(page).to have_content "19/02/95"
+        expect(page).to have_content "Hello world!"
+        expect(page).to have_link "Reply"
+      end
+    end
+  end
+
 end
