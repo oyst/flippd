@@ -23,6 +23,47 @@ module CommentSystem
   end
 
   class StubCommentProvider
+    def initialize(forum_id, thread_id, test_mode = false)
+        user1 = User.new(1, "User1", "user1@mail.com")
+        user2 = User.new(2, "User2", "user2@mail.com")
+        user3 = User.new(3, "User3", "user3@mail.com")
+        user4 = User.new(4, "User4", "user4@mail.com")
+
+        @comments = {nil => [], 1 => [], 3 => [], 5 => []}
+        @comments[nil] << Comment.new(1, "Hello world!", user1, 2, "19/02/95")
+        @comments[nil] << Comment.new(2, "Test comment", user2, 0, "14/06/15")
+        @comments[1] << Comment.new(3, "foo", user3, 1, "23/10/93")
+        @comments[1] << Comment.new(4, "bar", user3, 0, "24/10/15")
+        @comments[3] << Comment.new(5, "baz", user1, 0, "12/02/16")
+        @comments[nil] << Comment.new(5, "Parent", user4, 1, "15/04/13")
+        @comments[5] << Comment.new(6, "Child", user2, 0, "11/05/13")
+    end
+
+    def create(user_id, message, reply_id: nil)
+    end
+
+    def delete(user_id, comment_id)
+    end
+
+    def update(user_id, comment_id, message)
+    end
+
+    def get_comments(start: 0, max: 100, order: nil, parent_id: nil)
+      if @comments[parent_id].nil?
+        return []
+      end
+      return @comments[parent_id]
+    end
+
+    def count(parent_id: nil)
+      if @comments[parent_id].nil?
+        return 0
+      end
+      return @comments[parent_id].count
+    end
+  end
+
+  class MockCommentProvider
     @@comments = {}
 
     def initialize(forum_id, thread_id, test_mode = false)

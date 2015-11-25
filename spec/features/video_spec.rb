@@ -46,8 +46,8 @@ feature "A video page" do
 
   context "with no comments" do
     before do
-      CommentSystem::StubCommentProvider.clear_comments
-      use_comment_provider(CommentSystem::StubCommentProvider)
+      CommentSystem::MockCommentProvider.clear_comments
+      use_comment_provider(CommentSystem::MockCommentProvider)
     end
 
     it "tells the user there are no comments" do
@@ -65,12 +65,12 @@ feature "A video page" do
       c2 = CommentSystem::Comment.new(2, "bar", user, 1, "23/10/15")
       c3 = CommentSystem::Comment.new(3, "baz", user, 0, "25/11/15")
 
-      CommentSystem::StubCommentProvider.clear_comments
-      CommentSystem::StubCommentProvider.add_comment(c1, nil)
-      CommentSystem::StubCommentProvider.add_comment(c2, 1)
-      CommentSystem::StubCommentProvider.add_comment(c3, 2)
+      CommentSystem::MockCommentProvider.clear_comments
+      CommentSystem::MockCommentProvider.add_comment(c1, nil)
+      CommentSystem::MockCommentProvider.add_comment(c2, 1)
+      CommentSystem::MockCommentProvider.add_comment(c3, 2)
 
-      use_comment_provider(CommentSystem::StubCommentProvider)
+      use_comment_provider(CommentSystem::MockCommentProvider)
     end
 
     it "does not tell the user there are no comments" do
