@@ -47,7 +47,6 @@ class Flippd < Sinatra::Application
             @phase = phase
             @video = video
             @commentProvider = CommentSystem::CommentProvider.new("DAMS", @video['youtube'])
-            @video["comments"] = @commentProvider.get_comments(start: 0, max: 20, parent_id: nil)
           end
         end
       end

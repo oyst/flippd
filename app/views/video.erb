@@ -48,22 +48,9 @@
 <div id="comments" class="row" style="margin-top: 1.5em;">
   <h4>Comments</h4>
 
-  <% if @video["comments"] && @video["comments"].size > 0 %>
-    <% @video["comments"].each do |comment| %>
-      <div class="comment-container">
-        <div class="comment-header">
-          <span class="comment-poster"> <%=comment.user.name%> </span>
-          <span class="comment-date"> <%=comment.creation_date%> </span>
-        </div>
-        <div class="comment-body">
-          <p class="comment-text">
-            <%=comment.message%>
-          </p>
-          <a href="<%="##{comment.id}"%>"> Reply </a>
-        </div>
-      </div>
-    <% end %>
-  <% else %>
+  <% if @commentProvider.get_comments(start: 0, max: 20, parent_id: nil).each do |comment| %>
+      <%= erb :comment_container, :locals => {:comment => comment, :depth => 1} %>
+  <% end.empty? %>
     <p> No comments yet </p>
   <% end %>
 
