@@ -59,7 +59,8 @@ feature "A video page" do
 
   context "with comments" do
     before do
-      CommentSystem::MockCommentProvider.generate_comments(depth: 1)
+      CommentSystem::MockCommentProvider.clear_comments
+      CommentSystem::MockCommentProvider.generate_replies(count: 1)
       use_comment_provider(CommentSystem::MockCommentProvider)
     end
 
@@ -80,7 +81,8 @@ feature "A video page" do
 
     context "at max depth" do
       before do
-        CommentSystem::MockCommentProvider.generate_comments(depth: CommentSystem::MAX_REPLY_DEPTH)
+        CommentSystem::MockCommentProvider.clear_comments
+        CommentSystem::MockCommentProvider.generate_nested_replies(depth: CommentSystem::MAX_REPLY_DEPTH)
         use_comment_provider(CommentSystem::MockCommentProvider)
       end
 
@@ -92,7 +94,7 @@ feature "A video page" do
 
       it "contains the 2nd comment" do
         within "#comments" do
-          expect(page).to have_content "message_2"
+          expect(page).to have_content "message_1"
         end
       end
 
@@ -111,7 +113,8 @@ feature "A video page" do
 
     context "past max depth" do
       before do
-        CommentSystem::MockCommentProvider.generate_comments(depth: CommentSystem::MAX_REPLY_DEPTH + 1)
+        CommentSystem::MockCommentProvider.clear_comments
+        CommentSystem::MockCommentProvider.generate_nested_replies(depth: CommentSystem::MAX_REPLY_DEPTH + 1)
         use_comment_provider(CommentSystem::MockCommentProvider)
       end
 
@@ -123,7 +126,7 @@ feature "A video page" do
 
       it "contains the 2nd comment" do
         within "#comments" do
-          expect(page).to have_content "message_2"
+          expect(page).to have_content "message_1"
         end
       end
 
@@ -146,6 +149,75 @@ feature "A video page" do
       end
     end
 
+    context "at max reply limit" do
+      before do
+        CommentSystem::MockCommentProvider.clear_comments
+        CommentSystem::MockCommentProvider.generate_replies(count: CommentSystem::MAX_REPLY_COUNT)
+        use_comment_provider(CommentSystem::MockCommentProvider)
+      end
+
+      it "contains the first comment" do
+        within "#comments" do
+          expect(page).to have_content "message_0"
+        end
+      end
+
+      it "contains the 2nd comment" do
+        within "#comments" do
+          expect(page).to have_content "message_1"
+        end
+      end
+
+      it "contains the last comment" do
+        within "#comments" do
+          expect(page).to have_content "message_#{CommentSystem::MAX_REPLY_COUNT - 1}"
+        end
+      end
+
+      it "does not contain the show more comments link" do
+        within "#comments" do
+          expect(page).to_not have_link "Show more comments"
+        end
+      end
+    end
+
+    context "past max reply limit" do
+      before do
+        CommentSystem::MockCommentProvider.clear_comments
+        CommentSystem::MockCommentProvider.generate_replies(count: CommentSystem::MAX_REPLY_COUNT + 1)
+        use_comment_provider(CommentSystem::MockCommentProvider)
+      end
+
+      it "contains the first comment" do
+        within "#comments" do
+          expect(page).to have_content "message_0"
+        end
+      end
+
+      it "contains the 2nd comment" do
+        within "#comments" do
+          expect(page).to have_content "message_1"
+        end
+      end
+
+      it "contains the second to last comment" do
+        within "#comments" do
+          expect(page).to have_content "message_#{CommentSystem::MAX_REPLY_COUNT - 1}"
+        end
+      end
+
+      it "does not contain the last comment" do
+        within "#comments" do
+          expect(page).to_not have_content "message_#{CommentSystem::MAX_REPLY_COUNT}"
+        end
+      end
+
+      it "contains the show more comments link" do
+        within "#comments" do
+          expect(page).to have_link "Show more comments"
+        end
+      end
+    end
   end
 
 end
