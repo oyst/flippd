@@ -21,7 +21,7 @@ module Helpers
   end
 
   def use_comment_provider(provider)
-    CommentSystem::CommentProvider.set_provider_class(provider)
+    CommentSystem.set_provider(provider)
     # We need to reload the page after changing the CommentProvider!!
     # Otherwise the CommentProvider used will be the current one i.e. UNCHANGED
     visit current_path

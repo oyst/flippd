@@ -104,22 +104,14 @@ module CommentSystem
     end
   end
 
-  class CommentProvider
-    extend Forwardable
-    def_delegators :@provider, :create, :delete, :update, :get_comments, :count
+  @provider = StubCommentProvider
 
-    attr_accessor :provider
+  def self.get_provider(forum_id, thread_id, test_mode: false)
+    return @provider.new(forum_id, thread_id, test_mode)
+  end
 
-    @@provider_class = StubCommentProvider
-
-    def initialize(forum_id, thread_id, test_mode = false)
-      @provider = @@provider_class.new(forum_id, thread_id, test_mode: test_mode)
-    end
-
-    def self.set_provider_class(provider_class)
-      @@provider_class = provider_class
-    end
-
+  def self.set_provider(c)
+    @provider = c
   end
 
 end

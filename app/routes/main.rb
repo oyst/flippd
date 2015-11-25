@@ -46,7 +46,7 @@ class Flippd < Sinatra::Application
           if video["id"] == params['id'].to_i
             @phase = phase
             @video = video
-            @commentProvider = CommentSystem::CommentProvider.new("DAMS", @video['youtube'])
+            @commentProvider = CommentSystem.get_provider("DAMS", @video['youtube'])
           end
         end
       end
