@@ -1,5 +1,6 @@
 require 'open-uri'
 require 'json'
+require_relative 'comment_system'
 
 class Flippd < Sinatra::Application
   before do
@@ -45,6 +46,7 @@ class Flippd < Sinatra::Application
           if video["id"] == params['id'].to_i
             @phase = phase
             @video = video
+            @commentProvider = CommentSystem.get_provider("DAMS", @video['youtube'])
           end
         end
       end

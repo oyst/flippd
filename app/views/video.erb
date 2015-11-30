@@ -44,6 +44,18 @@
 </div>
 <% end %>
 
+
+<div id="comments" class="row" style="margin-top: 1.5em;">
+  <h4>Comments</h4>
+
+  <% if @commentProvider.count(parent_id: nil) > 0 %>
+    <%= erb :comment_container, :locals => {:depth => 0, :parent_id => nil} %>
+  <% else %>
+    <p> No comments yet </p>
+  <% end %>
+
+</div>
+
 <script>
   // 2. This code loads the IFrame Player API code asynchronously.
   var tag = document.createElement('script');
@@ -64,3 +76,9 @@
     player.stopVideo();
   }
 </script>
+
+<%
+
+
+
+%>
