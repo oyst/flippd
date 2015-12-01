@@ -26,13 +26,19 @@ class Flippd < Sinatra::Application
   end
 
   post '/comments' do
+    unless session[:user_id]
+      redirect to('/auth/new')
+    end
     user_id   = session[:user_id]
     message   = params['message']
     video_id  = params['video_id']
+    if message.empty?
+      session['comment_error'] = 'Please enter valid comment'
+      redirect back
+    end
     parent_id = params['parent_id']
-    comment = CommentProvider.create(user_id, message, video_id, parent_id)
-
-    "User Id id #{user_id}"
+    CommentProvider.create(user_id, message, video_id, parent_id)
+    redirect back
   end
 
   get '/' do
@@ -56,7 +62,7 @@ class Flippd < Sinatra::Application
           if video["id"] == params['id'].to_i
             @phase = phase
             @video = video
-            @commentProvider = CommentSystem.get_provider("DAMS", @video['tube'])
+            @comments = CommentProvider.get_comments(@video['slug'], 0, 10, nil)
           end
         end
       end
@@ -80,6 +86,11 @@ class Flippd < Sinatra::Application
           end
         end
       end
+    end
+
+    if session['comment_error']
+      @comment_error = session['comment_error']
+      session['comment_error'] = nil
     end
 
     pass unless @video

@@ -47,18 +47,21 @@
 
 <div id="comments" class="row" style="margin-top: 1.5em;">
   <h4>Comments</h4>
-
-  <% if @commentProvider.count(parent_id: nil) > 0 %>
-    <%= erb :comment_container, :locals => {:depth => 0, :parent_id => nil} %>
-  <% else %>
-    <p> No comments yet </p>
+  <% @comments.each do |comment| %>
+    <li style="padding: 3px 0">
+      <%=comment["text"]%> 
+    </li>
   <% end %>
-
-<form method="post" action="/comments">
-  <input type="hidden" name="video_id" value="<%=@video["slug"]%>"/>
-  <input type="text" name="message" placeholder="Enter comment..." />
-  <input type="submit" value="Add Comment">
-</form>
+  <div style = 'color:red'>
+    <% if @comment_error %>
+      <%=@comment_error %>
+    <% end %>
+  </div>
+  <form method="post" action="/comments">
+    <input type="hidden" name="video_id" value="<%=@video["slug"]%>"/>
+    <input type="text" name="message" placeholder="Enter comment..." />
+    <input type="submit" value="Add Comment">
+  </form>
 </div>
 
 <script>
