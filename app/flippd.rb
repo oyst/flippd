@@ -18,3 +18,4 @@ class Flippd < Sinatra::Application
 end
 
 require_relative 'routes/init'
+require_relative 'providers/init'

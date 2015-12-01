@@ -1,24 +1,17 @@
 require "time"
 
 class CommentProvider
-  def initialize(forum_id, thread_id)
-    @forum_id = forum_id
-    @thread_id = thread_id
-  end
-  
   # Creates a comment in the database
-  def create(user_id, message, parent_id)
-    if (parent_id == nil)
-      Comment.create({ text: message }, { user: user_id }, { date: Time.now }, { threadid: thread_id }, { forumid: forum_id })
-    else
-      Comment.create({ text: message }, { user: user_id }, { date: Time.now }, { threadid: thread_id }, { forumid: forum_id }, { comment: parent_id })
-    end
+  # Do we need the nil check
+  def create(user_id, message, video_id, parent_id)
+    Comment.create({ text: message }, { user: user_id }, { date: Time.now }, { threadid: thread_id }, { forumid: forum_id }, { comment: parent_id })
   end
   
   # Retrieves comments from the database for a specified video id
+  # Needs to get top level comments with their replies or take a parent id to get chidren
   def get_comments(start, max, parent_id)
     allcomments = Comment.all(:videoid.eql => @thread_id, :order => [ :date.desc ])
-    return allcomments[ start, max ]
+    allcomments[ start, max ]
   end
   
   # Updates a comment in the database
@@ -33,6 +26,6 @@ class CommentProvider
   
   # Returns the number of replies a comment has
   def count(parent_id)
-    return Comment.all(:parent_id.eql => @thread_id).count)
+    return Comment.all(:parent_id.eql => @thread_id).count
   end
 end
