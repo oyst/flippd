@@ -51,10 +51,14 @@
       <%=@comment_error %>
     <% end %>
   </div>
-  <form method="post" action="/comments">
-    <input type="hidden" name="video_id" value="<%=@video["slug"]%>"/>
-    <input type="text" name="message" placeholder="Enter comment..." />
-    <input type="submit" value="Add Comment">
+  <form method="post" class="form form-inline" action="/comments">
+    <div class="form-group">
+      <input type="hidden" name="video_id" value="<%=@video["slug"]%>"/>
+    </div>
+    <div class="form-group">
+      <input type="text" class="form-control" name="message" placeholder="Enter comment..." />
+    </div>
+    <button type="submit" class="btn btn-submit">Add Comment</button>
   </form>
 </div>
   <% @comments.each do |comment| %>
@@ -63,11 +67,17 @@
       <% comment.comments.all.each do | reply | %>
         <p style='margin-left:30px'><%=reply["text"]%></p>
       <% end %>
-      <form method="post" action="/comments">
-        <input type="hidden" name="video_id" value="<%=@video["slug"]%>"/>
-        <input type="hidden" name="parent_id" value="<%=comment["id"]%>"/>
-        <input type="text" name="message" placeholder="Enter reply..." />
-        <input type="submit" value="Reply">
+      <form method="post" class="form form-inline" action="/comments">
+        <div class="form-group">
+          <input type="hidden" name="video_id" value="<%=@video["slug"]%>"/>
+        </div>
+        <div class="form-group">  
+          <input type="hidden" name="parent_id" value="<%=comment["id"]%>"/>
+        </div>
+        <div class="form-group">
+          <input type="text" class="form-control" name="message" placeholder="Enter reply..." />
+        </div>
+        <button type="submit" class="btn btn-submit">Reply</button>
       </form>
     </li>
   <% end %>
