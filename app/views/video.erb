@@ -44,12 +44,17 @@
 </div>
 <% end %>
 
-
 <div id="comments" class="row" style="margin-top: 1.5em;">
   <h4>Comments</h4>
   <% @comments.each do |comment| %>
     <li style="padding: 3px 0">
       <%=comment["text"]%> 
+      <% if comment["replies"] %>
+        <% comment["replies"].each do | reply | %>
+          Hereerer
+          reply["text"]
+        <% end %>
+      <% end %>
     </li>
   <% end %>
   <div style = 'color:red'>

@@ -10,7 +10,7 @@ class CommentProvider
   # Retrieves comments from the database for a specified video id
   # Needs to get top level comments with their replies or take a parent id to get chidren
   def self.get_comments(video_id, start, max, parent_id)
-    allcomments = Comment.all(:videoid => video_id, :order => [ :date.desc ])
+    allcomments = Comment.all(:videoid => video_id, :order => [ :date.desc ], :comment_id => nil)
     allcomments[ start, max ]
   end
   
