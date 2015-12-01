@@ -46,14 +46,6 @@
 
 <div id="comments" class="row" style="margin-top: 1.5em;">
   <h4>Comments</h4>
-  <% @comments.each do |comment| %>
-    <li style="padding: 3px 0">
-      <%=comment["text"]%> 
-        <% comment.comments.all.each do | reply | %>
-          <p style='margin-left:30px'><%=reply["text"]%></p>
-        <% end %>
-      </li>
-  <% end %>
   <div style = 'color:red'>
     <% if @comment_error %>
       <%=@comment_error %>
@@ -65,6 +57,20 @@
     <input type="submit" value="Add Comment">
   </form>
 </div>
+  <% @comments.each do |comment| %>
+    <li style="padding: 3px 0">
+      <%=comment["text"]%> 
+      <% comment.comments.all.each do | reply | %>
+        <p style='margin-left:30px'><%=reply["text"]%></p>
+      <% end %>
+      <form method="post" action="/comments">
+        <input type="hidden" name="video_id" value="<%=@video["slug"]%>"/>
+        <input type="hidden" name="parent_id" value="<%=comment["id"]%>"/>
+        <input type="text" name="message" placeholder="Enter reply..." />
+        <input type="submit" value="Reply">
+      </form>
+    </li>
+  <% end %>
 
 <script>
   // 2. This code loads the IFrame Player API code asynchronously.

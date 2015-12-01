@@ -4,7 +4,7 @@ class CommentProvider
   # Creates a comment in the database
   # Do we need the nil check
   def self.create(user_id, message, video_id, parent_id)
-    Comment.create(:text => message, :user_id => user_id, :date => Time.now, :videoid => video_id, :comment => parent_id)
+    Comment.create(:text => message, :user_id => user_id, :date => Time.now, :videoid => video_id, :comment_id => parent_id)
   end
   
   # Retrieves comments from the database for a specified video id
