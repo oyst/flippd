@@ -16,18 +16,21 @@
       <p style='margin-left:30px'><%=reply.user.name%> replied - <%=reply.date.strftime('%d %B %Y at %H:%I')%>:</p>
       <p style='margin-left:30px'><%=reply["text"]%></p>
     <% end %>
-    <form method="post" class="form form-inline" action="/comments">
-      <div class="form-group">
-        <input type="hidden" name="video_id" value="<%=@video["slug"]%>"/>
-      </div>
-      <div class="form-group">  
-        <input type="hidden" name="parent_id" value="<%=comment["id"]%>"/>
-      </div>
-      <div class="form-group">
-        <input type="text" class="form-control" name="message" placeholder="Enter reply..." />
-      </div>
-      <button type="submit" class="btn btn-submit">Reply</button>
-    </form>
+    <a class="reply-link">Reply</a>
+    <div class="reply-box">
+      <form method="post" class="form form-inline" action="/comments">
+        <div class="form-group">
+          <input type="hidden" name="video_id" value="<%=@video["slug"]%>"/>
+        </div>
+        <div class="form-group">  
+          <input type="hidden" name="parent_id" value="<%=comment["id"]%>"/>
+        </div>
+        <div class="form-group">
+          <input type="text" class="form-control" name="message" placeholder="Enter reply..." />
+        </div>
+        <button type="submit" class="btn btn-submit">Reply</button>
+      </form>
+    </div>
     </li>
     </p>
   </div>
