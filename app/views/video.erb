@@ -49,13 +49,10 @@
   <% @comments.each do |comment| %>
     <li style="padding: 3px 0">
       <%=comment["text"]%> 
-      <% if comment["replies"] %>
-        <% comment["replies"].each do | reply | %>
-          Hereerer
-          reply["text"]
+        <% comment.comments.all.each do | reply | %>
+          <p style='margin-left:30px'><%=reply["text"]%></p>
         <% end %>
-      <% end %>
-    </li>
+      </li>
   <% end %>
   <div style = 'color:red'>
     <% if @comment_error %>
