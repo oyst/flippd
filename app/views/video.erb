@@ -55,11 +55,15 @@
     </div>
     <button type="submit" class="btn btn-submit">Add Comment</button>
   </form>
-  <% @comments.each do |comment| %>
-    <%= erb :comment_container, :locals => {:comment => comment} %>
-  <% end %>
+  <% if @comments.empty? %>
+    No comments yet
+  <% else %>
+    <% @comments.each do |comment| %>
+      <%= erb :comment_container, :locals => {:comment => comment} %>
+    <%end%>
+  <%end%>
 
-  <script>
+<script>
 // 2. This code loads the IFrame Player API code asynchronously.
   var tag = document.createElement('script');
 
@@ -72,13 +76,13 @@
   var player;
   function onYouTubeIframeAPIReady() {
     player = new YT.Player('player', {
-videoId: '<%= @video["youtube"] %>'
-});
-}
-function stopVideo() {
-  player.stopVideo();
-}
-  </script>
+      videoId: '<%= @video["youtube"] %>'
+    });
+  }
+  function stopVideo() {
+    player.stopVideo();
+  }
+</script>
 
   <%
 
