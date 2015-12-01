@@ -62,9 +62,6 @@ class Flippd < Sinatra::Application
             @phase = phase
             @video = video
             @comments = CommentProvider.get_comments(@video['slug'], 0, 10, nil)
-            @comments.each do | comment |
-              comment['replies'] = comment.comments.all(:limit => 10, :order => [ :date.desc ])
-            end
           end
         end
       end
