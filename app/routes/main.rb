@@ -1,6 +1,5 @@
 require 'open-uri'
 require 'json'
-require_relative 'comment_system'
 
 class Flippd < Sinatra::Application
   before do
