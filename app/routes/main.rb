@@ -25,6 +25,16 @@ class Flippd < Sinatra::Application
     end
   end
 
+  post '/comments' do
+    user_id   = session[:user_id]
+    message   = params['message']
+    video_id  = params['video_id']
+    parent_id = params['parent_id']
+    comment = CommentProvider.create(user_id, message, video_id, parent_id)
+
+    "User Id id #{user_id}"
+  end
+
   get '/' do
     erb open(ENV['CONFIG_URL'] + "index.erb").read
   end
@@ -46,7 +56,7 @@ class Flippd < Sinatra::Application
           if video["id"] == params['id'].to_i
             @phase = phase
             @video = video
-            @commentProvider = CommentSystem.get_provider("DAMS", @video['youtube'])
+            @commentProvider = CommentSystem.get_provider("DAMS", @video['tube'])
           end
         end
       end

@@ -54,6 +54,11 @@
     <p> No comments yet </p>
   <% end %>
 
+<form method="post" action="/comments">
+  <input type="hidden" name="video_id" value="<%=@video["slug"]%>"/>
+  <input type="text" name="message" placeholder="Enter comment..." />
+  <input type="submit" value="Add Comment">
+</form>
 </div>
 
 <script>
