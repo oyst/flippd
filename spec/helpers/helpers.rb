@@ -20,13 +20,12 @@ module Helpers
     click_on 'Sign Out'
   end
 
-  def use_comment_provider(provider)
-    CommentSystem.set_provider(provider)
-    # We need to reload the page after changing the CommentProvider!!
-    # Otherwise the CommentProvider used will be the current one i.e. UNCHANGED
-    visit current_path
+  def submit_comment(from: '/videos/1')
+    sign_in
+    visit from
+    fill_in 'message', with: 'This is a test comment'
+    click_on 'Add Comment'
   end
-
 end
 
 OmniAuth.config.logger.level = Logger::UNKNOWN
