@@ -44,6 +44,11 @@
   </div>
 <% end %>
 
+<div style = 'color:red'>
+  <% if @comment_error %>
+    <%=@comment_error %>
+  <% end %>
+</div>
 <div id="comments" class="row" style="margin-top: 1.5em;">
   <h4>Comments</h4>
   <form method="post" class="form form-inline" action="/comments">
