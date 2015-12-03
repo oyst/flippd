@@ -6,6 +6,7 @@ class Flippd < Sinatra::Application
     # Load in the configuration (at the URL in the project's .env file)
     @module = JSON.load(open(ENV['CONFIG_URL'] + "module.json"))
     @phases = @module['phases']
+    @commentProvider = DbCommentProvider.new
 
     # The configuration doesn't have to include identifiers, so we
     # add an identifier to each phase and video
@@ -36,7 +37,7 @@ class Flippd < Sinatra::Application
       redirect back
     end
     parent_id = params['parent_id']
-    CommentProvider.create(user_id, message, video_id, parent_id)
+    @commentProvider.create(user_id, message, video_id, parent_id)
     redirect back
   end
 
@@ -61,7 +62,7 @@ class Flippd < Sinatra::Application
           if video["id"] == params['id'].to_i
             @phase = phase
             @video = video
-            @comments = CommentProvider.get_comments(@video['slug'], 0, 10, nil)
+            @comments = @commentProvider.get_comments(@video['slug'])
           end
         end
       end
