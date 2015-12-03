@@ -94,7 +94,6 @@ class Flippd < Sinatra::Application
     end
 
     pass unless @video
-    #@video['comments'][0]
     erb :video
   end
 end
