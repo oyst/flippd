@@ -7,12 +7,12 @@
 
   <div class="comment-header">
     <span class="comment-poster"> <b><%=comment.user.name%></b> </span>
-    <span class="comment-date"> on <%=comment.date.strftime('%d %B %Y at %H:%I')%>: </span>
+    <span class="comment-date"> on <%=comment.date%>: </span>
   </div>
   <div class="comment-body">
     <%=comment.text%>
-    <% comment.comments.all(:order => [ :date.asc ]).each do | reply | %>
-      <p style='margin-left:30px'><%=reply.user.name%> replied - <%=reply.date.strftime('%d %B %Y at %H:%I')%>:</p>
+    <% comment.comments.each do | reply | %>
+      <p style='margin-left:30px'><%=reply.user.name%> replied - <%=reply.date%>:</p>
       <p style='margin-left:30px'><%=reply["text"]%></p>
     <% end %>
     <br />
