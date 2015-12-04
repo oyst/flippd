@@ -1,0 +1,30 @@
+<div class="comment-container">
+
+  <div class="comment-header">
+    <span class="comment-poster"> <b><%=comment.user.name%></b> </span>
+    <span class="comment-date"> on <%=comment.date.strftime('%d %B %Y at %H:%M')%>: </span>
+  </div>
+  <div class="comment-body">
+    <%=comment.text%>
+    <% comment.comments.each do | reply | %>
+      <p style='margin-left:30px'><%=reply.user.name%> replied - <%=reply.date.strftime('%d %B %Y at %H:%M')%>:</p>
+      <p style='margin-left:30px'><%=reply["text"]%></p>
+    <% end %>
+    <br />
+    <a class="reply-link">Reply</a>
+    <div class="reply-box">
+      <form method="post" class="form form-inline" action="/comments">
+        <div class="form-group">
+          <input type="hidden" name="video_id" value="<%=@video["slug"]%>"/>
+        </div>
+        <div class="form-group">  
+          <input type="hidden" name="parent_id" value="<%=comment["id"]%>"/>
+        </div>
+        <div class="form-group">
+          <input type="text" class="form-control" name="message" placeholder="Enter reply..." />
+        </div>
+        <button type="submit" class="btn btn-submit">Reply</button>
+      </form>
+    </div>
+  </div>
+</div>

@@ -29,23 +29,47 @@
 </div>
 
 <% if @video["resources"] %>
-<div id="resources" class="row" style="margin-top: 1.5em;">
-  <div class="col-xs-6 col-md-6">
-    <h4>Additional Material</h4>
-    <ul class="list-unstyled" style="padding-left: 15px; font-size: 120%;">
-    <% @video["resources"].each do |resource| %>
-      <li style="padding: 3px 0">
-        <span class="glyphicon glyphicon-<%=resource["icon"]%>" aria-hidden="true"></span>
-        &nbsp; <a href="<%=resource["url"]%>"><%=resource["title"]%></a>
-      </li>
-    <% end %>
-    </ul>
+  <div id="resources" class="row" style="margin-top: 1.5em;">
+    <div class="col-xs-6 col-md-6">
+      <h4>Additional Material</h4>
+      <ul class="list-unstyled" style="padding-left: 15px; font-size: 120%;">
+        <% @video["resources"].each do |resource| %>
+          <li style="padding: 3px 0">
+          <span class="glyphicon glyphicon-<%=resource["icon"]%>" aria-hidden="true"></span>
+          &nbsp; <a href="<%=resource["url"]%>"><%=resource["title"]%></a>
+          </li>
+        <% end %>
+      </ul>
+    </div>
   </div>
-</div>
 <% end %>
 
+<div style = 'color:red'>
+  <% if @comment_error %>
+    <%=@comment_error %>
+  <% end %>
+</div>
+<div id="comments" class="row" style="margin-top: 1.5em;">
+  <h4>Comments</h4>
+  <form method="post" class="form form-inline" action="/comments">
+    <div class="form-group">
+      <input type="hidden" name="video_id" value="<%=@video["slug"]%>"/>
+    </div>
+    <div class="form-group">
+      <input type="text" class="form-control" name="message" placeholder="Enter comment..." />
+    </div>
+    <button type="submit" class="btn btn-submit">Add Comment</button>
+  </form>
+  <% if @comments.empty? %>
+    No comments yet
+  <% else %>
+    <% @comments.each do |comment| %>
+      <%= erb :comment_container, :locals => {:comment => comment} %>
+    <%end%>
+  <%end%>
+
 <script>
-  // 2. This code loads the IFrame Player API code asynchronously.
+// 2. This code loads the IFrame Player API code asynchronously.
   var tag = document.createElement('script');
 
   tag.src = "https://www.youtube.com/iframe_api";

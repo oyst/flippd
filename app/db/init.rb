@@ -14,3 +14,4 @@ model_files.each { |f| require f }
 
 DataMapper.finalize
 DataMapper.auto_upgrade!
+DataMapper::Model.raise_on_save_failure = true
