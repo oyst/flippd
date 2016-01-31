@@ -55,14 +55,14 @@ class Flippd < Sinatra::Application
     erb :phase
   end
 
-  get '/topics/:title/questions' do
+  route :get, :post, '/topics/:title/questions' do
     @topic = nil
     @phases.each do |phase|
       phase['topics'].each do |topic|
         @topic = topic if topic['title'].downcase.gsub(" ", "_") == params['title']
       end
     end
-    @questions = @topic['question']
+    @questions = @topic['questions']
     erb :quiz
   end
 
