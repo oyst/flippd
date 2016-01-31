@@ -1,4 +1,7 @@
 <div class="quiz">
+  <% if @score %>
+    You scored <%= @score %>
+  <% end %>
   <form method = "post">
     <% @questions.each do |question| %>
       <div><%= question['question'] %></div>
