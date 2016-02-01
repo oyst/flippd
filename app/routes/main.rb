@@ -25,22 +25,6 @@ class Flippd < Sinatra::Application
     end
   end
 
-  post '/comments' do
-    unless session[:user_id]
-      redirect to('/auth/new')
-    end
-    user_id   = session[:user_id]
-    message   = params['message']
-    video_id  = params['video_id']
-    if message.empty?
-      session['comment_error'] = 'Please enter valid comment'
-      redirect back
-    end
-    parent_id = params['parent_id']
-    @commentProvider.create(user_id, message, video_id, parent_id)
-    redirect back
-  end
-
   get '/' do
     erb open(ENV['CONFIG_URL'] + "index.erb").read
   end
@@ -53,26 +37,6 @@ class Flippd < Sinatra::Application
 
     pass unless @phase
     erb :phase
-  end
-
-  route :get, :post, '/topics/:title/questions' do
-    if params['question']
-      @score = 0
-      params['question'].each do |answer|
-        if answer == 'true'
-          @score += 1
-        end
-      end
-    end
-    @topic = nil
-    @phases.each do |phase|
-      phase['topics'].each do |topic|
-        @topic = topic if topic['title'].downcase.gsub(" ", "_") == params['title']
-      end
-    end
-    @questions = @topic['questions']
-    pass unless @questions
-    erb :quiz
   end
 
   get '/videos/:id' do
