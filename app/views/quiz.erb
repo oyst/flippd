@@ -1,13 +1,14 @@
 <div class="quiz">
+  <%= @answerId if @answerId %>
   <% if @score %>
     You scored <%= @score %>
   <% end %>
   <form method = "post">
     <% @questions.each do |question| %>
       <div><%= question['question'] %></div>
-      <select name="question[]">
+      <select name="question[<%= question['id'] %>]">
         <% question['answers'].each do |answer| %>
-          <option value="<%= answer['correct'] %>"><%= answer['answer'] %></option>
+          <option value="<%= answer['id'] %>"<% if @answers and "#{@answers["#{question['id']}"]}" == "#{answer['id']}" %>selected<% end %> ><%= answer['answer'] %></option>
         <% end %>
       </select>
     <% end %> 
