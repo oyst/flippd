@@ -19,6 +19,11 @@
               <a href="/videos/<%=video["id"]%>"><%=video["title"]%></a>
             </li>
         <% end %>
+        <% if topic['questions'] %>
+          <li>
+          <a href="/topics/<%= topic["title"].downcase.gsub(" ", "_") %>/questions">Quiz</a>
+          </li>
+        <% end %>
         </ul>
       </div>
 
