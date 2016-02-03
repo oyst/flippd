@@ -1,4 +1,10 @@
+require_relative '../lib/quiz/resultProcessor'
+require_relative '../lib/quiz/result'
+
 class Flippd < Sinatra::Application
+  before do
+    @quizProcessor = QuizResultProcessor.new
+  end
   route :get, :post, '/topics/:title/questions' do
     @topic = nil
     @phases.each do |phase|
@@ -7,17 +13,12 @@ class Flippd < Sinatra::Application
       end
     end
     @questions = @topic['questions']
+    @correctQuestions = {}
     pass unless @questions
     if params['question']
-      @score = 0
-      @correctQuestions = {}
-      @questions.each do |question|
-        answerId = params['question']["#{question['id']}"]
-        if answerId == "#{question['correctAnswerId']}" then
-          @score += 1
-          @correctQuestions[question['id']] = true
-        end
-      end
+      quizResult = @quizProcessor.getResult(@questions, params['question'])
+      @score = quizResult.getScore()
+      @correctQuestions = quizResult.correctQuestions
       @answers = params['question']
     end
     erb :quiz

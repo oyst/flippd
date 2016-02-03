@@ -11,9 +11,9 @@
           <option value="<%= answer['id'] %>"<% if @answers and "#{@answers["#{question['id']}"]}" == "#{answer['id']}" %>selected<% end %> ><%= answer['answer'] %></option>
         <% end %>
       </select>
-      <% if @correctQuestions[question['id']] %>
+      <% if @correctQuestions[question['id']] == true %>
         Correct
-      <% else %>
+      <% elsif @answers %>
         Incorrect
       <% end %>
     <% end %> 
