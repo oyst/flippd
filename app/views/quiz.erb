@@ -8,7 +8,9 @@
       <div><%= question['question'] %></div>
       <select name="question[<%= question['id'] %>]">
         <% question['answers'].each do |answer| %>
-          <option value="<%= answer['id'] %>"<% if @answers and "#{@answers["#{question['id']}"]}" == "#{answer['id']}" %>selected<% end %> ><%= answer['answer'] %></option>
+          <option value="<%= answer['id'] %>" <%= 'selected' if @answers and @answers[question['id'].to_s].to_i == answer['id'] %> >
+            <%= answer['answer'] %>
+          </option>
         <% end %>
       </select>
       <% if @correctQuestions[question['id']] == true %>

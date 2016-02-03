@@ -5,6 +5,7 @@ class Flippd < Sinatra::Application
   before do
     @quizProcessor = QuizResultProcessor.new
   end
+
   route :get, :post, '/topics/:title/questions' do
     @topic = nil
     @phases.each do |phase|
@@ -13,11 +14,11 @@ class Flippd < Sinatra::Application
       end
     end
     @questions = @topic['questions']
-    @correctQuestions = {}
     pass unless @questions
+    @correctQuestions = {}
     if params['question']
       quizResult = @quizProcessor.getResult(@questions, params['question'])
-      @score = quizResult.getScore()
+      @score = quizResult.score
       @correctQuestions = quizResult.correctQuestions
       @answers = params['question']
     end

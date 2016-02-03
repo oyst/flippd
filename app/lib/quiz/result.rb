@@ -4,7 +4,7 @@ class QuizResult
     @correctQuestions = correctQuestions
   end
 
-  def getScore
+  def score
     @correctQuestions.length
   end
 
