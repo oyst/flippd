@@ -11,6 +11,11 @@
           <option value="<%= answer['id'] %>"<% if @answers and "#{@answers["#{question['id']}"]}" == "#{answer['id']}" %>selected<% end %> ><%= answer['answer'] %></option>
         <% end %>
       </select>
+      <% if @correctQuestions[question['id']] %>
+        Correct
+      <% else %>
+        Incorrect
+      <% end %>
     <% end %> 
     <p><input type="submit" value="Submit" /></p>
   </form>

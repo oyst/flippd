@@ -10,10 +10,12 @@ class Flippd < Sinatra::Application
     pass unless @questions
     if params['question']
       @score = 0
+      @correctQuestions = {}
       @questions.each do |question|
         answerId = params['question']["#{question['id']}"]
         if answerId == "#{question['correctAnswerId']}" then
           @score += 1
+          @correctQuestions[question['id']] = true
         end
       end
       @answers = params['question']
