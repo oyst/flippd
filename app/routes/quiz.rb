@@ -13,6 +13,7 @@ class Flippd < Sinatra::Application
         @topic = topic if topic['title'].downcase.gsub(" ", "_") == params['title']
       end
     end
+    pass unless @topic
     @questions = @topic['questions']
     pass unless @questions
     @correctQuestions = {}
