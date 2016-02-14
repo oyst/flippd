@@ -1,5 +1,6 @@
 require_relative '../lib/quiz/resultProcessor'
 require_relative '../lib/quiz/result'
+require_relative '../lib/url/generator'
 
 class Flippd < Sinatra::Application
   before do
@@ -10,7 +11,7 @@ class Flippd < Sinatra::Application
     @topic = nil
     @phases.each do |phase|
       phase['topics'].each do |topic|
-        @topic = topic if topic['title'].downcase.gsub(" ", "_") == params['title']
+        @topic = topic if UrlGenerator.to_url(topic['title']) == params['title']
       end
     end
     pass unless @topic
@@ -18,10 +19,10 @@ class Flippd < Sinatra::Application
     pass unless @questions
     @correctQuestions = {}
     if params['question']
-      quizResult = @quizProcessor.getResult(@questions, params['question'])
+      @answers = params['question']
+      quizResult = @quizProcessor.getResult(@questions, @answers)
       @score = quizResult.score
       @correctQuestions = quizResult.correctQuestions
-      @answers = params['question']
     end
     erb :quiz
   end

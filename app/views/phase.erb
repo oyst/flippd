@@ -21,7 +21,7 @@
         <% end %>
         <% if topic['questions'] %>
           <li>
-          <a href="/topics/<%= topic["title"].downcase.gsub(" ", "_") %>/questions">Quiz</a>
+          <a href="/topics/<%= UrlGenerator.to_url(topic["title"]) %>/questions">Quiz</a>
           </li>
         <% end %>
         </ul>
