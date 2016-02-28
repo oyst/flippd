@@ -5,7 +5,7 @@ class Flippd < Sinatra::Application
   post '/video-view' do
     redirect to('/auth/new') if @user == nil
     video_id = params['video_id']
-    View.create(:videoid => video_id, :user => @user, :date => Time.now)
+    @videoViewProvider.add_view(@user, video_id)
     redirect back
   end
 end

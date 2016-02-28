@@ -7,6 +7,7 @@ class Flippd < Sinatra::Application
     @module = JSON.load(open(ENV['CONFIG_URL'] + "module.json"))
     @phases = @module['phases']
     @commentProvider = DbCommentProvider.new
+    @videoViewProvider = VideoViewProvider.new
 
     # The configuration doesn't have to include identifiers, so we
     # add an identifier to each phase and video
