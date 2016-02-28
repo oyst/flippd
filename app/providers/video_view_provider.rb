@@ -6,4 +6,9 @@ class VideoViewProvider
   def get_view(user, video_id)
     View.first(:user => user, :videoid => video_id)
   end
+
+  def remove_view(user, video_id)
+    view = get_view(user, video_id)
+    view.destroy
+  end
 end

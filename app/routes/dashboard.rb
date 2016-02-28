@@ -8,6 +8,13 @@ class Flippd < Sinatra::Application
     @videoViewProvider.add_view(@user, video_id)
     redirect back
   end
+
+  post '/remove-video-view' do
+    redirect to('auth/new') if @user == nil
+    video_id = params['video_id']
+    @videoViewProvider.remove_view(@user, video_id)
+    redirect back
+  end
   post '/video-rate' do
     redirect to('/auth/new') if @user == nil
     video_id = params['video_id']
