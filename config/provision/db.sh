@@ -17,4 +17,4 @@ mysql -u root --password=$PASSWORD --execute="CREATE DATABASE flippd"
 mysql -u root --password=$PASSWORD --execute="CREATE DATABASE flippd_test"
 
 echo "Setting up lookup data"
-mysql -u root --password=$PASSWORD --execute="INSERT INTO flippd.ratings (id, name, symbol) VALUES (1, 'happy', ':)'), (2, 'neutral', ':|'), (3, 'sad', ':(');"
+mysql -u root --password=$PASSWORD --execute="INSERT IGNORE INTO flippd.ratings (id, name, symbol) VALUES (1, 'happy', ':)'), (2, 'neutral', ':|'), (3, 'sad', ':(');"
