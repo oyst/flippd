@@ -33,6 +33,9 @@
             <% @phases.each do |phase| %>
               <li><a href="/phases/<%=phase["title"].downcase.gsub(" ", "_")%>"><%=phase["title"]%></a></li>
             <% end %>
+            <% if @user %>
+              <li><a href="/dashboard">My Dashboard</a></li>
+            <% end %>
           </ul>
           <ul class="nav navbar-nav navbar-right">
             <% if @user %>
