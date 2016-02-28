@@ -9,6 +9,7 @@ class Flippd < Sinatra::Application
     @commentProvider = DbCommentProvider.new
     @videoViewProvider = VideoViewProvider.new
     @videoRatingProvider = VideoRatingProvider.new
+    @quizScoreProvider = QuizScoreProvider.new
 
     # The configuration doesn't have to include identifiers, so we
     # add an identifier to each phase and video

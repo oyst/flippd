@@ -8,6 +8,7 @@ class Flippd < Sinatra::Application
   end
 
   route :get, :post, '/topics/:title/questions' do
+    redirect to('auth/new') unless @user
     @topic = nil
     @phases.each do |phase|
       phase['topics'].each do |topic|
@@ -23,6 +24,7 @@ class Flippd < Sinatra::Application
       quizResult = @quizProcessor.getResult(@questions, @answers)
       @score = quizResult.score
       @correctQuestions = quizResult.correctQuestions
+      @quizScoreProvider.add_score(@user, @topic['slug'], @score)
     end
     erb :quiz
   end
