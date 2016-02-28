@@ -28,10 +28,14 @@
   <div id="player"></div>
 </div>
 <div style="margin-top:20px">
-  <form method="post" action='/video-view'>
-    <input type = "hidden" name="video_id" value="<%= @video['slug'] %>" />
-    <input type = "submit" value="Mark video as viewed" />
-  </form>
+  <% if @user_has_viewed %>
+    You have marked this video as viewed
+  <% else %>
+    <form method="post" action='/video-view'>
+      <input type = "hidden" name="video_id" value="<%= @video['slug'] %>" />
+      <input type = "submit" value="Mark video as viewed" />
+    </form>
+  <% end %>
 </div>
 
 <% if @video["resources"] %>

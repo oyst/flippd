@@ -77,7 +77,7 @@ class Flippd < Sinatra::Application
       @comment_error = session['comment_error']
       session['comment_error'] = nil
     end
-
+    @user_has_viewed = true if @user and @videoViewProvider.get_view(@user, @video['slug']) != nil
     pass unless @video
     erb :video
   end

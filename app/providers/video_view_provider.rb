@@ -3,7 +3,7 @@ class VideoViewProvider
     View.create(:videoid => video_id, :user => user, :date => Time.now)
   end
 
-  def has_viewed(user, video_id)
-    #will return whether the user has viewed the video
+  def get_view(user, video_id)
+    View.first(:user => user, :videoid => video_id)
   end
 end
