@@ -27,6 +27,12 @@
 <div id="video" class="embed-responsive embed-responsive-16by9">
   <div id="player"></div>
 </div>
+<div style="margin-top:20px">
+  <form method="post" action='/video-view'>
+    <input type = "hidden" name="video_id" value="<%= @video['slug'] %>" />
+    <input type = "submit" value="Mark video as viewed" />
+  </form>
+</div>
 
 <% if @video["resources"] %>
   <div id="resources" class="row" style="margin-top: 1.5em;">
