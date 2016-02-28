@@ -30,6 +30,16 @@
 <div style="margin-top:20px">
   <% if @user_has_viewed %>
     You have marked this video as viewed
+    <form method="post" action="/video-rate">
+      <input type="hidden" name="video_id" value="<%= @video['slug'] %>" />
+      Rate this video
+      <select name="rating_id">
+        <% @ratings.each do |rating| %>
+          <option value="<%= rating.id %>"><%= rating.symbol %></option>
+        <% end %>        
+      </select>
+      <input type="submit" value="rate" />
+    </form>
   <% else %>
     <form method="post" action='/video-view'>
       <input type = "hidden" name="video_id" value="<%= @video['slug'] %>" />

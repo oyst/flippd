@@ -8,6 +8,7 @@ class Flippd < Sinatra::Application
     @phases = @module['phases']
     @commentProvider = DbCommentProvider.new
     @videoViewProvider = VideoViewProvider.new
+    @videoRatingProvider = VideoRatingProvider.new
 
     # The configuration doesn't have to include identifiers, so we
     # add an identifier to each phase and video
@@ -78,6 +79,7 @@ class Flippd < Sinatra::Application
       session['comment_error'] = nil
     end
     @user_has_viewed = true if @user and @videoViewProvider.get_view(@user, @video['slug']) != nil
+    @ratings = @videoRatingProvider.get_ratings()
     pass unless @video
     erb :video
   end
