@@ -29,13 +29,21 @@
 </div>
 <div style="margin-top:20px">
   <% if @user_has_viewed %>
+    <form method="post" action="/remove-video-view">
     You have marked this video as viewed
+      <input type="hidden" name="video_id" value="<%= @video['slug'] %>" />
+      <input type="submit" value="Undo" />
+    </form>
     <form method="post" action="/video-rate">
       <input type="hidden" name="video_id" value="<%= @video['slug'] %>" />
-      Rate this video
+      <% if @user_rating %>
+        Update your rating
+      <% else %>
+        Rate this video
+      <% end %>  
       <select name="rating_id">
         <% @ratings.each do |rating| %>
-          <option value="<%= rating.id %>"><%= rating.symbol %></option>
+          <option <%= 'selected' if @user_rating and @user_rating.rating_id == rating.id %> value="<%= rating.id %>"><%= rating.symbol %></option>
         <% end %>        
       </select>
       <input type="submit" value="rate" />
