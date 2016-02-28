@@ -80,6 +80,7 @@ class Flippd < Sinatra::Application
     end
     @user_has_viewed = true if @user and @videoViewProvider.get_view(@user, @video['slug']) != nil
     @ratings = @videoRatingProvider.get_ratings()
+    @user_rating = @videoRatingProvider.get_rating(@user, @video['slug'])
     pass unless @video
     erb :video
   end
