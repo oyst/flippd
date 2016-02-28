@@ -26,6 +26,7 @@ class Flippd < Sinatra::Application
       @correctQuestions = quizResult.correctQuestions
       @quizScoreProvider.add_score(@user, @topic['slug'], @score)
     end
+    @previousScores = @quizScoreProvider.get_scores(@user, @topic['slug'])
     erb :quiz
   end
 end

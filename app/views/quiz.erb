@@ -20,5 +20,11 @@
       <% end %>
     <% end %> 
     <p><input type="submit" value="Submit" /></p>
+    <% if @previousScores != nil %>
+      <h3>Your previous scores</h3>
+      <% @previousScores.each do |score| %>
+        <p><%= score.score %> on <%= score.date %></p>
+      <% end %>
+    <% end %>
   </form>
 </div>
