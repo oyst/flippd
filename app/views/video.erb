@@ -43,7 +43,7 @@
       <% end %>  
       <select name="rating_id">
         <% @ratings.each do |rating| %>
-          <option <%= 'selected' if @user_rating and @user_rating.rating_id == rating.id %> value="<%= rating.id %>"><%= rating.symbol %></option>
+          <option <%= 'selected' if @user_rating and @user_rating.rating_name == rating['name'] %> value="<%= rating['name'] %>"><%= rating['symbol'] %></option>
         <% end %>        
       </select>
       <input type="submit" value="rate" />

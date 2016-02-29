@@ -3,8 +3,8 @@ class UserRating
 
   property :id, Serial
   property :videoid, String, required: true, length: 100
+  property :rating_name, String, required: true, length: 100
   property :date, DateTime, required: true
 
   belongs_to :user
-  belongs_to :rating
 end
