@@ -1,1 +1,9 @@
 <h1>My Dashboard</h1>
+<h3>My Quiz Results</h3>
+<table style="border:1px solid black" border=1>
+  <% @topics.each do |topic| %>
+    <tr>
+      <td><%= topic['title'] %></td><td>Score: <%= topic['score'] %></td>
+    </tr>
+  <% end %>
+</table>

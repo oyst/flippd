@@ -1,5 +1,14 @@
 class Flippd < Sinatra::Application
   get '/dashboard' do
+    redirect to('/auth/new') if @user == nil
+    @topics = []
+    @phases.each do |phase|
+      phase['topics'].each do |topic|
+        topScore = @quizScoreProvider.get_highest_score(@user, topic['slug'])
+        topic['score'] = topScore
+        @topics.push(topic)
+      end
+    end
     erb :dashboard
   end
 

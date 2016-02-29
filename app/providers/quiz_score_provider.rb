@@ -8,6 +8,6 @@ class QuizScoreProvider
   end
 
   def get_highest_score(user, topic_id)
-    QuizScore.aggregate(:score.max, :fields => [:topic_name], :unique => true, :order => nil)
+    QuizScore.first(:user => user, :topic_id => topic_id)
   end
 end
