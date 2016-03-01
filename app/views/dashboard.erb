@@ -1,9 +1,19 @@
 <h1>My Dashboard</h1>
 <h3>My Quiz Results</h3>
 <table style="border:1px solid black" border=1>
+  <tr>
+    <th>Topic Title</th><th>Max Score</th>
+  </tr>
   <% @topics.each do |topic| %>
     <tr>
-      <td><%= topic['title'] %></td><td>Score: <%= topic['score'] %></td>
+      <td><%= topic['title'] %></td>
+      <td>
+        <% if topic['score'] %>
+          Score: <%= topic['score'].score %>
+        <% else %>
+          Not yet taken
+        <% end %>
+      </td>
     </tr>
   <% end %>
 </table>

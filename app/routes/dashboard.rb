@@ -4,6 +4,7 @@ class Flippd < Sinatra::Application
     @topics = []
     @phases.each do |phase|
       phase['topics'].each do |topic|
+        next unless topic['questions']
         topScore = @quizScoreProvider.get_highest_score(@user, topic['slug'])
         topic['score'] = topScore
         @topics.push(topic)
@@ -25,6 +26,7 @@ class Flippd < Sinatra::Application
     @videoViewProvider.remove_view(@user, video_id)
     redirect back
   end
+
   post '/video-rate' do
     redirect to('/auth/new') if @user == nil
     video_id = params['video_id']
