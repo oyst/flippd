@@ -44,47 +44,4 @@ class Flippd < Sinatra::Application
     erb :phase
   end
 
-  get '/videos/:id' do
-    @phases.each do |phase|
-      phase['topics'].each do |topic|
-        topic['videos'].each do |video|
-          if video["id"] == params['id'].to_i
-            @phase = phase
-            @video = video
-            @comments = @commentProvider.get_comments(@video['slug'])
-          end
-        end
-      end
-    end
-
-    @phases.each do |phase|
-      phase['topics'].each do |topic|
-        topic['videos'].each do |video|
-          if video["id"] == params['id'].to_i + 1
-            @next_video = video
-          end
-        end
-      end
-    end
-
-    @phases.each do |phase|
-      phase['topics'].each do |topic|
-        topic['videos'].each do |video|
-          if video["id"] == params['id'].to_i - 1
-            @previous_video = video
-          end
-        end
-      end
-    end
-
-    if session['comment_error']
-      @comment_error = session['comment_error']
-      session['comment_error'] = nil
-    end
-    @user_has_viewed = true if @user and @videoViewProvider.get_view(@user, @video['slug']) != nil
-    @ratings = @module['ratings']
-    @user_rating = @videoRatingProvider.get_rating(@user, @video['slug'])
-    pass unless @video
-    erb :video
-  end
 end
