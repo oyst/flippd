@@ -7,7 +7,7 @@ class Flippd < Sinatra::Application
     redirect to('/auth/new') unless @user
     scores = @quizScoreSummary.get_score_summary(@user)
     quizTableWidget = QuizWidget.create(scores)
-    videoGraphWidget = VideoGraphWidget.create([])
+    videoGraphWidget = VideoGraphWidget.create([1,2,3,4,5,6,7,8,9])
     @dashboard = Dashboard.new
     @dashboard.add(quizTableWidget)
     @dashboard.add(videoGraphWidget)

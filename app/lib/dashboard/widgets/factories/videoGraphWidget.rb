@@ -2,6 +2,7 @@ require_relative '../graph/graphWidget.rb'
 
 class VideoGraphWidget
   def self.create(data)
-    GraphWidget.new(data, 'Videos Watched Graph')
+    labels = ['October', 'November', 'December', 'January', 'February', 'March', 'April', 'May', 'June']
+    GraphWidget.new(labels, data, 'Videos Watched Graph')
   end
 end

@@ -1,1 +1,12 @@
-<p>This would be a graph</p>
+<table border=1 style="border : 1px solid black">
+  <tr>
+    <% widget.labels.each do |label| %>
+      <th><%= label %></th>
+    <% end %>
+  </tr>
+  <tr>
+    <% widget.data.each do |dataPoint| %>
+      <td><%= dataPoint %></td>
+    <% end %>
+  </tr>
+</table>
