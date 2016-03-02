@@ -1,5 +1,5 @@
 <h1>My Dashboard</h1>
-<h3>My Quiz Results</h3>
 <% @dashboard.widgets.each do |widget| %>
+  <h3><%= widget.title %></h3>
   <%= erb widget.template, :locals => {:widget => widget} %>
 <% end %>

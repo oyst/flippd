@@ -6,6 +6,6 @@ class QuizWidget
     topic = TableColumn.new('Topic', 'title')
     score = TableColumn.new('Score', 'score', 'Not yet taken')
     columns = [topic, score]
-    TableWidget.new(columns, data)
+    TableWidget.new(columns, data, 'My Quiz Scores')
   end
 end
