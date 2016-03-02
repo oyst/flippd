@@ -1,17 +1,17 @@
 <table style="border:1px solid black" border=1>
   <tr>
-    <% widget.headings.each do |heading| %>
-      <th><%= heading %></th>
+    <% widget.columns.each do |column| %>
+      <th><%= column.heading %></th>
     <% end %>
   </tr>
   <% widget.data.each do |topic| %>
     <tr>
-      <% widget.keys.each do |columnKey| %>
+      <% widget.columns.each do |column| %>
         <td>
-          <% if topic[columnKey] %>
-            <%= topic[columnKey] %>
+          <% if topic[column.key] %>
+            <%= topic[column.key] %>
           <% else %>
-            <%= widget.empties[columnKey] %>
+            <%= column.empty_message %>
           <% end %>
         </td>
 
