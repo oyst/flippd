@@ -1,15 +1,13 @@
+require_relative '../lib/dashboard/widgets/factories/quizWidget.rb'
+require_relative '../lib/dashboard/dashboard.rb'
+
 class Flippd < Sinatra::Application
   get '/dashboard' do
     redirect to('/auth/new') if @user == nil
-    @topics = []
-    @phases.each do |phase|
-      phase['topics'].each do |topic|
-        next unless topic['questions']
-        topScore = @quizScoreProvider.get_highest_score(@user, topic['slug'])
-        topic['score'] = topScore
-        @topics.push(topic)
-      end
-    end
+    scores = @quizScoreSummary.get_score_summary(@user)
+    quizTableWidget = QuizWidget.create(scores)
+    @dashboard = Dashboard.new
+    @dashboard.add(quizTableWidget)
     erb :dashboard
   end
 
