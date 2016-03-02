@@ -8,6 +8,6 @@ class QuizScoreProvider
   end
 
   def get_highest_score(user, topic_id)
-    QuizScore.first(:user => user, :topic_id => topic_id)
+    QuizScore.max(:score, :conditions => {:user => user, :topic_id => topic_id})
   end
 end
