@@ -1,6 +1,7 @@
 require 'open-uri'
 require 'json'
 require_relative '../lib/quiz/quizScoreSummary'
+require_relative '../lib/videos/videoSummary.rb'
 
 class Flippd < Sinatra::Application
   before do
@@ -12,6 +13,7 @@ class Flippd < Sinatra::Application
     @videoRatingProvider = VideoRatingProvider.new
     @quizScoreProvider = QuizScoreProvider.new
     @quizScoreSummary = QuizScoreSummary.new(@phases, @quizScoreProvider)
+    @videoSummary = VideoSummary.new(@module, @videoViewProvider)
 
     # The configuration doesn't have to include identifiers, so we
     # add an identifier to each phase and video
