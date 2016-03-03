@@ -1,3 +1,5 @@
+require_relative '../lib/url/generator'
+
 class JsonModuleProvider
   def initialize(module_json)
     @json   = module_json
@@ -65,11 +67,33 @@ class JsonModuleProvider
     return topics
   end
 
+  def get_topic(url_title)
+    selectedTopic = nil
+    @phases.each do |phase|
+      phase['topics'].each do |topic|
+        selectedTopic = topic if UrlGenerator.to_url(topic['title']) == url_title 
+      end
+    end
+    return selectedTopic
+  end
+
   def get_start_date
     @json['startDate']
   end
 
   def get_end_date
     @json['endDate']
+  end
+
+  def get_ratings
+    @json['ratings']
+  end
+
+  def get_title
+    @json['title']
+  end
+
+  def get_phases
+    @json['phases']
   end
 end

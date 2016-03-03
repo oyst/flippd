@@ -12,7 +12,7 @@ class Flippd < Sinatra::Application
       session['comment_error'] = nil
     end
     @user_has_viewed = true if @user and @videoViewProvider.get_view(@user, @video['slug']) != nil
-    @ratings = @module['ratings']
+    @ratings = @jsonModuleProvider.get_ratings
     @user_rating = @videoRatingProvider.get_rating(@user, @video['slug'])
     pass unless @video
     erb :video

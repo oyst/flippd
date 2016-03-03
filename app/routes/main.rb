@@ -6,21 +6,14 @@ require_relative '../lib/videos/videoSummary.rb'
 class Flippd < Sinatra::Application
   before do
     # Load in the configuration (at the URL in the project's .env file)
-    @module = JSON.load(open(ENV['CONFIG_URL'] + "module.json"))
-    @phases = @module['phases']
     @commentProvider = DbCommentProvider.new
     @videoViewProvider = VideoViewProvider.new
     @videoRatingProvider = VideoRatingProvider.new
     @quizScoreProvider = QuizScoreProvider.new
-    @jsonModuleProvider = JsonModuleProvider.new(@module)
-    @quizScoreSummary = QuizScoreSummary.new(@jsonModuleProvider, @quizScoreProvider)
-    @videoSummary = VideoSummary.new(@jsonModuleProvider, @videoViewProvider)
-
-    # The configuration doesn't have to include identifiers, so we
-    # add an identifier to each phase and video
+    moduleData = JSON.load(open(ENV['CONFIG_URL'] + "module.json"))
     phase_id = 1
     video_id = 1
-    @phases.each do |phase|
+    moduleData['phases'].each do |phase|
       phase["id"] = phase_id
       phase_id += 1
 
@@ -31,6 +24,14 @@ class Flippd < Sinatra::Application
         end
       end
     end
+    @jsonModuleProvider = JsonModuleProvider.new(moduleData)
+    @moduleTitle = @jsonModuleProvider.get_title
+    @phases = @jsonModuleProvider.get_phases
+    @quizScoreSummary = QuizScoreSummary.new(@jsonModuleProvider, @quizScoreProvider)
+    @videoSummary = VideoSummary.new(@jsonModuleProvider, @videoViewProvider)
+
+    # The configuration doesn't have to include identifiers, so we
+    # add an identifier to each phase and video
   end
 
   get '/' do

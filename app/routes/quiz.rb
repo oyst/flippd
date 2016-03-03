@@ -1,6 +1,5 @@
 require_relative '../lib/quiz/resultProcessor'
 require_relative '../lib/quiz/result'
-require_relative '../lib/url/generator'
 
 class Flippd < Sinatra::Application
   before do
@@ -9,12 +8,7 @@ class Flippd < Sinatra::Application
 
   route :get, :post, '/topics/:title/questions' do
     redirect to('auth/new') unless @user
-    @topic = nil
-    @phases.each do |phase|
-      phase['topics'].each do |topic|
-        @topic = topic if UrlGenerator.to_url(topic['title']) == params['title']
-      end
-    end
+    @topic = @jsonModuleProvider.get_topic(params['title'])
     pass unless @topic
     @questions = @topic['questions']
     pass unless @questions
