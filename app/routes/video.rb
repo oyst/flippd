@@ -1,16 +1,9 @@
 class Flippd < Sinatra::Application
   get '/videos/:id' do
-    @phases.each do |phase|
-      phase['topics'].each do |topic|
-        topic['videos'].each do |video|
-          if video["id"] == params['id'].to_i
-            @phase = phase
-            @video = video
-            @comments = @commentProvider.get_comments(@video['slug'])
-          end
-        end
-      end
-    end
+    @videoData = @jsonModuleProvider.get_video(params['id'])
+    @phase = @videoData[:phase]
+    @video = @videoData[:video]
+    @comments = @commentProvider.get_comments(@video['slug'])
 
     @phases.each do |phase|
       phase['topics'].each do |topic|

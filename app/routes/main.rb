@@ -12,6 +12,7 @@ class Flippd < Sinatra::Application
     @videoViewProvider = VideoViewProvider.new
     @videoRatingProvider = VideoRatingProvider.new
     @quizScoreProvider = QuizScoreProvider.new
+    @jsonModuleProvider = JsonModuleProvider.new(@module)
     @quizScoreSummary = QuizScoreSummary.new(@phases, @quizScoreProvider)
     @videoSummary = VideoSummary.new(@module, @videoViewProvider)
 
