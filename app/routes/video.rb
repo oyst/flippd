@@ -4,26 +4,8 @@ class Flippd < Sinatra::Application
     @phase = @videoData[:phase]
     @video = @videoData[:video]
     @comments = @commentProvider.get_comments(@video['slug'])
-
-    @phases.each do |phase|
-      phase['topics'].each do |topic|
-        topic['videos'].each do |video|
-          if video["id"] == params['id'].to_i + 1
-            @next_video = video
-          end
-        end
-      end
-    end
-
-    @phases.each do |phase|
-      phase['topics'].each do |topic|
-        topic['videos'].each do |video|
-          if video["id"] == params['id'].to_i - 1
-            @previous_video = video
-          end
-        end
-      end
-    end
+    @next_video = @jsonModuleProvider.get_next_video(params['id'])
+    @previous_video = @jsonModuleProvider.get_previous_video(params['id'])
 
     if session['comment_error']
       @comment_error = session['comment_error']
