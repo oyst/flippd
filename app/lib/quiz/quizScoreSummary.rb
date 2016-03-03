@@ -1,18 +1,16 @@
 class QuizScoreSummary
-  def initialize(phases, quizScoreProvider)
-    @phases = phases
-    @quizScoreProvider = quizScoreProvider
+  def initialize(module_provider, quiz_score_provider)
+    @module_provider = module_provider
+    @quiz_score_provider = quiz_score_provider
   end
 
   def get_score_summary(user)
     topics = []
-    @phases.each do |phase|
-      phase['topics'].each do |topic|
+    @module_provider.get_all_topics.each do |topic|
         next unless topic['questions']
-        topScore = @quizScoreProvider.get_highest_score(user, topic['slug'])
+        topScore = @quiz_score_provider.get_highest_score(user, topic['slug'])
         topic['score'] = topScore
         topics.push(topic)
-      end
     end
     return topics
   end

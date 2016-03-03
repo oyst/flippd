@@ -43,7 +43,33 @@ class JsonModuleProvider
     return @previous_video
   end
 
-  def get_videos(topic_slug)
+  def get_all_videos
+    videos = []
+    @phases.each do |phase|
+      phase['topics'].each do |topic|
+        topic['videos'].each do |video|
+          videos.push(video)
+        end
+      end
+    end
+    return videos
+  end
 
+  def get_all_topics
+    topics = []
+    @phases.each do |phase|
+      phase['topics'].each do |topic|
+        topics.push(topic)
+      end
+    end
+    return topics
+  end
+
+  def get_start_date
+    @json['startDate']
+  end
+
+  def get_end_date
+    @json['endDate']
   end
 end
