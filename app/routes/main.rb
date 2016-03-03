@@ -10,6 +10,8 @@ class Flippd < Sinatra::Application
     @videoViewProvider = VideoViewProvider.new
     @videoRatingProvider = VideoRatingProvider.new
     @quizScoreProvider = QuizScoreProvider.new
+    # The configuration doesn't have to include identifiers, so we
+    # add an identifier to each phase and video
     moduleData = JSON.load(open(ENV['CONFIG_URL'] + "module.json"))
     phase_id = 1
     video_id = 1
@@ -29,9 +31,6 @@ class Flippd < Sinatra::Application
     @phases = @jsonModuleProvider.get_phases
     @quizScoreSummary = QuizScoreSummary.new(@jsonModuleProvider, @quizScoreProvider)
     @videoSummary = VideoSummary.new(@jsonModuleProvider, @videoViewProvider)
-
-    # The configuration doesn't have to include identifiers, so we
-    # add an identifier to each phase and video
   end
 
   get '/' do
