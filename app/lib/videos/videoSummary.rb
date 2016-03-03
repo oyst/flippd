@@ -27,4 +27,22 @@ class VideoSummary
     end
     return @views_months
   end
+
+  def get_videos_viewed(user)
+    videosViewed = []
+    @moduleData['phases'].each do |phase|
+      phase['topics'].each do |topic|
+        topic['videos'].each do |video|
+          videoView = @videoProvider.get_view(user, video['slug'])
+          if videoView
+            video['viewed'] = 'yes'
+          else
+            video['viewed'] = 'no'
+          end
+          videosViewed.push(video)
+        end
+      end
+      return videosViewed
+    end
+  end
 end
