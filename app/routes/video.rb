@@ -1,19 +1,19 @@
 class Flippd < Sinatra::Application
   get '/videos/:id' do
-    @videoData = @jsonModuleProvider.get_video(params['id'])
-    @phase = @videoData[:phase]
-    @video = @videoData[:video]
-    @comments = @commentProvider.get_comments(@video['slug'])
-    @next_video = @jsonModuleProvider.get_next_video(params['id'])
-    @previous_video = @jsonModuleProvider.get_previous_video(params['id'])
+    @video_data = @json_module_provider.get_video(params['id'])
+    @phase = @video_data[:phase]
+    @video = @video_data[:video]
+    @comments = @comment_provider.get_comments(@video['slug'])
+    @next_video = @json_module_provider.get_next_video(params['id'])
+    @previous_video = @json_module_provider.get_previous_video(params['id'])
 
     if session['comment_error']
       @comment_error = session['comment_error']
       session['comment_error'] = nil
     end
-    @user_has_viewed = true if @user and @videoViewProvider.get_view(@user, @video['slug']) != nil
-    @ratings = @jsonModuleProvider.get_ratings
-    @user_rating = @videoRatingProvider.get_rating(@user, @video['slug'])
+    @user_has_viewed = true if @user and @video_view_provider.get_view(@user, @video['slug']) != nil
+    @ratings = @json_module_provider.get_ratings
+    @user_rating = @video_rating_provider.get_rating(@user, @video['slug'])
     pass unless @video
     erb :video
   end
@@ -21,14 +21,14 @@ class Flippd < Sinatra::Application
   post '/video-view' do
     redirect to('/auth/new') unless @user
     video_id = params['video_id']
-    @videoViewProvider.add_view(@user, video_id)
+    @video_view_provider.add_view(@user, video_id)
     redirect back
   end
 
   post '/remove-video-view' do
     redirect to('auth/new') unless @user
     video_id = params['video_id']
-    @videoViewProvider.remove_view(@user, video_id)
+    @video_view_provider.remove_view(@user, video_id)
     redirect back
   end
 
@@ -36,7 +36,7 @@ class Flippd < Sinatra::Application
     redirect to('/auth/new') unless @user
     video_id = params['video_id']
     rating_id = params['rating_id']
-    @videoRatingProvider.add_rating(@user, video_id, rating_id)
+    @video_rating_provider.add_rating(@user, video_id, rating_id)
     redirect back
   end
 end

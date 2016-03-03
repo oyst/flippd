@@ -68,13 +68,13 @@ class JsonModuleProvider
   end
 
   def get_topic(url_title)
-    selectedTopic = nil
+    selected_topic = nil
     @phases.each do |phase|
       phase['topics'].each do |topic|
-        selectedTopic = topic if UrlGenerator.to_url(topic['title']) == url_title 
+        selected_topic = topic if UrlGenerator.to_url(topic['title']) == url_title 
       end
     end
-    return selectedTopic
+    return selected_topic
   end
 
   def get_start_date

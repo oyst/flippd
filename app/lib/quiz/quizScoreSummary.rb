@@ -8,8 +8,8 @@ class QuizScoreSummary
     topics = []
     @module_provider.get_all_topics.each do |topic|
         next unless topic['questions']
-        topScore = @quiz_score_provider.get_highest_score(user, topic['slug'])
-        topic['score'] = topScore
+        top_score = @quiz_score_provider.get_highest_score(user, topic['slug'])
+        topic['score'] = top_score
         topics.push(topic)
     end
     return topics

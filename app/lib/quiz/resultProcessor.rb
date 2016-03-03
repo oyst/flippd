@@ -1,13 +1,13 @@
 class QuizResultProcessor
-  
-  def getResult(questions, submittedQuestions)
-      correctQuestions = {}
+
+  def get_result(questions, submitted_questions)
+      correct_questions = {}
       questions.each do |question|
-        answerId = submittedQuestions[question['id'].to_s]
-        if answerId == question['correctAnswerId'].to_s then
-          correctQuestions[question['id']] = true
+        answer_id = submitted_questions[question['id'].to_s]
+        if answer_id == question['correctAnswerId'].to_s then
+          correct_questions[question['id']] = true
         end
       end
-      QuizResult.new(correctQuestions)
+      QuizResult.new(correct_questions)
   end
 end

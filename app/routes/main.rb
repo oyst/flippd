@@ -6,16 +6,16 @@ require_relative '../lib/videos/videoSummary.rb'
 class Flippd < Sinatra::Application
   before do
     # Load in the configuration (at the URL in the project's .env file)
-    @commentProvider = DbCommentProvider.new
-    @videoViewProvider = VideoViewProvider.new
-    @videoRatingProvider = VideoRatingProvider.new
-    @quizScoreProvider = QuizScoreProvider.new
+    @comment_provider = DbCommentProvider.new
+    @video_view_provider = VideoViewProvider.new
+    @video_rating_provider = VideoRatingProvider.new
+    @quiz_score_provider = QuizScoreProvider.new
     # The configuration doesn't have to include identifiers, so we
     # add an identifier to each phase and video
-    moduleData = JSON.load(open(ENV['CONFIG_URL'] + "module.json"))
+    module_data = JSON.load(open(ENV['CONFIG_URL'] + "module.json"))
     phase_id = 1
     video_id = 1
-    moduleData['phases'].each do |phase|
+    module_data['phases'].each do |phase|
       phase["id"] = phase_id
       phase_id += 1
 
@@ -26,11 +26,11 @@ class Flippd < Sinatra::Application
         end
       end
     end
-    @jsonModuleProvider = JsonModuleProvider.new(moduleData)
-    @moduleTitle = @jsonModuleProvider.get_title
-    @phases = @jsonModuleProvider.get_phases
-    @quizScoreSummary = QuizScoreSummary.new(@jsonModuleProvider, @quizScoreProvider)
-    @videoSummary = VideoSummary.new(@jsonModuleProvider, @videoViewProvider)
+    @json_module_provider = JsonModuleProvider.new(module_data)
+    @module_title = @json_module_provider.get_title
+    @phases = @json_module_provider.get_phases
+    @quiz_score_summary = QuizScoreSummary.new(@json_module_provider, @quiz_score_provider)
+    @video_summary = VideoSummary.new(@json_module_provider, @video_view_provider)
   end
 
   get '/' do
