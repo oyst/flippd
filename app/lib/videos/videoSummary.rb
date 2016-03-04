@@ -18,14 +18,14 @@ class VideoSummary
     views.each do |view|
       formatted_views[view.month] = view.total_views
     end
-    @views_months = []
+    @views_months = {}
     date_months.each do |month|
       if formatted_views[month]
         views =  formatted_views[month]
       else
         views = 0
       end
-      @views_months.push(views)
+      @views_months[month] = views
     end
     return @views_months
   end

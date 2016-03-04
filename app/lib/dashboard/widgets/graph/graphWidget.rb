@@ -1,9 +1,8 @@
 class GraphWidget
-  attr_reader :labels, :data, :title, :template
-  def initialize(labels, data, title)
-    @data     = data
-    @title    = title
-    @labels   = labels
-    @template = :"widgets/graph"
+  attr_reader :data_points, :title, :template
+  def initialize(data_points, title)
+    @data_points = data_points
+    @title       = title
+    @template    = :"widgets/graph"
   end
 end

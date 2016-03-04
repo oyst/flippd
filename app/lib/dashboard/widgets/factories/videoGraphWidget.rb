@@ -1,8 +1,12 @@
 require_relative '../graph/graphWidget.rb'
+require_relative '../graph/dataPoint'
 
 class VideoGraphWidget
   def self.create(data)
-    labels = ['October', 'November', 'December', 'January', 'February', 'March', 'April', 'May']
-    GraphWidget.new(labels, data, 'Videos Watched Graph')
+    data_points = []
+    data.each do |month, value|
+      data_points.push(DataPoint.new(Date::MONTHNAMES[month], value))
+    end
+    GraphWidget.new(data_points, 'Videos Watched Graph')
   end
 end
