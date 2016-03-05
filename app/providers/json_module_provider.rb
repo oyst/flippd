@@ -96,4 +96,12 @@ class JsonModuleProvider
   def get_phases
     @json['phases']
   end
+
+  def get_users_by_role(user_role)
+    users = []
+    @json['user_roles'].each do |role|
+      users = role['users'] if user_role = role['name']
+    end
+    users
+  end
 end

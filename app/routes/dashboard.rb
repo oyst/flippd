@@ -18,4 +18,9 @@ class Flippd < Sinatra::Application
     @dashboard.add(video_view_widget)
     erb :dashboard
   end
+
+  get '/lecturer/dashboard' do
+    lecturer!
+    "Hello Lecturer"
+  end
 end

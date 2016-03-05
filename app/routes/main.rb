@@ -31,11 +31,18 @@ class Flippd < Sinatra::Application
     @phases = @json_module_provider.get_phases
     @quiz_score_summary = QuizScoreSummary.new(@json_module_provider, @quiz_score_provider)
     @video_summary = VideoSummary.new(@json_module_provider, @video_view_provider)
+    @user_role_provider = UserRoleProvider.new(@json_module_provider)
   end
 
   helpers do
     def protected!
       redirect to('auth/new') unless @user
+    end
+
+    def lecturer!
+      redirect to('auth/new') unless @user
+      has_role = @user_role_provider.has_role(@user, 'lecturer')
+      halt(401, 'You are not authorized to view this page') unless has_role
     end
   end
 
