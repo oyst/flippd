@@ -1,8 +1,6 @@
 class Flippd < Sinatra::Application
   post '/comments' do
-    unless session[:user_id]
-      redirect to('/auth/new')
-    end
+    protected!
     user_id   = session[:user_id]
     message   = params['message']
     video_id  = params['video_id']

@@ -5,7 +5,7 @@ require_relative '../lib/dashboard/dashboard.rb'
 
 class Flippd < Sinatra::Application
   get '/dashboard' do
-    redirect to('/auth/new') unless @user
+    protected!
     scores = @quiz_score_summary.get_score_summary(@user)
     quiz_table_widget = QuizWidget.create(scores)
     views = @video_summary.get_videos_by_month(@user)

@@ -33,6 +33,12 @@ class Flippd < Sinatra::Application
     @video_summary = VideoSummary.new(@json_module_provider, @video_view_provider)
   end
 
+  helpers do
+    def protected!
+      redirect to('auth/new') unless @user
+    end
+  end
+
   get '/' do
     erb open(ENV['CONFIG_URL'] + "index.erb").read
   end

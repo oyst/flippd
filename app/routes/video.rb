@@ -19,21 +19,21 @@ class Flippd < Sinatra::Application
   end
 
   post '/video-view' do
-    redirect to('/auth/new') unless @user
+    protected!
     video_id = params['video_id']
     @video_view_provider.add_view(@user, video_id)
     redirect back
   end
 
   post '/remove-video-view' do
-    redirect to('auth/new') unless @user
+    protected!
     video_id = params['video_id']
     @video_view_provider.remove_view(@user, video_id)
     redirect back
   end
 
   post '/video-rate' do
-    redirect to('/auth/new') unless @user
+    protected!
     video_id = params['video_id']
     rating_id = params['rating_id']
     @video_rating_provider.add_rating(@user, video_id, rating_id)
