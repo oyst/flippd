@@ -1,0 +1,21 @@
+<table style="border:1px solid black" border=1>
+  <tr>
+    <% widget.columns.each do |column| %>
+      <th><%= column.heading %></th>
+    <% end %>
+  </tr>
+  <% widget.data.each do |topic| %>
+    <tr>
+      <% widget.columns.each do |column| %>
+        <td>
+          <% if topic[column.key] %>
+            <%= topic[column.key] %>
+          <% else %>
+            <%= column.empty_message %>
+          <% end %>
+        </td>
+
+      <% end %>
+    </tr>
+  <% end %>
+</table>

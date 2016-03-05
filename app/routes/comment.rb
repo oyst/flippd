@@ -11,7 +11,7 @@ class Flippd < Sinatra::Application
       redirect back
     end
     parent_id = params['parent_id']
-    @commentProvider.create(user_id, message, video_id, parent_id)
+    @comment_provider.create(user_id, message, video_id, parent_id)
     redirect back
   end
 end

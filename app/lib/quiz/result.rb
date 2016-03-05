@@ -1,11 +1,11 @@
 class QuizResult
-  attr_reader :correctQuestions
-  def initialize(correctQuestions)
-    @correctQuestions = correctQuestions
+  attr_reader :correct_questions
+  def initialize(correct_questions)
+    @correct_questions = correct_questions
   end
 
   def score
-    @correctQuestions.length
+    @correct_questions.length
   end
 
 end

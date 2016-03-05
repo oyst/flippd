@@ -1,18 +1,21 @@
 require 'open-uri'
 require 'json'
+require_relative '../lib/quiz/quizScoreSummary'
+require_relative '../lib/videos/videoSummary.rb'
 
 class Flippd < Sinatra::Application
   before do
     # Load in the configuration (at the URL in the project's .env file)
-    @module = JSON.load(open(ENV['CONFIG_URL'] + "module.json"))
-    @phases = @module['phases']
-    @commentProvider = DbCommentProvider.new
-
+    @comment_provider = DbCommentProvider.new
+    @video_view_provider = VideoViewProvider.new
+    @video_rating_provider = VideoRatingProvider.new
+    @quiz_score_provider = QuizScoreProvider.new
     # The configuration doesn't have to include identifiers, so we
     # add an identifier to each phase and video
+    module_data = JSON.load(open(ENV['CONFIG_URL'] + "module.json"))
     phase_id = 1
     video_id = 1
-    @phases.each do |phase|
+    module_data['phases'].each do |phase|
       phase["id"] = phase_id
       phase_id += 1
 
@@ -23,6 +26,11 @@ class Flippd < Sinatra::Application
         end
       end
     end
+    @json_module_provider = JsonModuleProvider.new(module_data)
+    @module_title = @json_module_provider.get_title
+    @phases = @json_module_provider.get_phases
+    @quiz_score_summary = QuizScoreSummary.new(@json_module_provider, @quiz_score_provider)
+    @video_summary = VideoSummary.new(@json_module_provider, @video_view_provider)
   end
 
   get '/' do
@@ -39,45 +47,4 @@ class Flippd < Sinatra::Application
     erb :phase
   end
 
-  get '/videos/:id' do
-    @phases.each do |phase|
-      phase['topics'].each do |topic|
-        topic['videos'].each do |video|
-          if video["id"] == params['id'].to_i
-            @phase = phase
-            @video = video
-            @comments = @commentProvider.get_comments(@video['slug'])
-          end
-        end
-      end
-    end
-
-    @phases.each do |phase|
-      phase['topics'].each do |topic|
-        topic['videos'].each do |video|
-          if video["id"] == params['id'].to_i + 1
-            @next_video = video
-          end
-        end
-      end
-    end
-
-    @phases.each do |phase|
-      phase['topics'].each do |topic|
-        topic['videos'].each do |video|
-          if video["id"] == params['id'].to_i - 1
-            @previous_video = video
-          end
-        end
-      end
-    end
-
-    if session['comment_error']
-      @comment_error = session['comment_error']
-      session['comment_error'] = nil
-    end
-
-    pass unless @video
-    erb :video
-  end
 end
