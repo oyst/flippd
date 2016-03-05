@@ -1,0 +1,5 @@
+<h1>My Dashboard</h1>
+<% @dashboard.widgets.each do |widget| %>
+  <h3><%= widget.title %></h3>
+  <%= erb widget.template, :locals => {:widget => widget} %>
+<% end %>
