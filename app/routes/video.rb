@@ -1,8 +1,8 @@
 class Flippd < Sinatra::Application
   get '/videos/:id' do
-    @video_data = @json_module_provider.get_video(params['id'])
-    @phase = @video_data[:phase]
-    @video = @video_data[:video]
+    @video = @json_module_provider.get_video(params['id'])
+    pass unless @video
+    @phase = @video['phase']
     @comments = @comment_provider.get_comments(@video['slug'])
     @next_video = @json_module_provider.get_next_video(params['id'])
     @previous_video = @json_module_provider.get_previous_video(params['id'])
@@ -14,7 +14,6 @@ class Flippd < Sinatra::Application
     @user_has_viewed = true if @user and @video_view_provider.get_view(@user, @video['slug']) != nil
     @ratings = @json_module_provider.get_ratings
     @user_rating = @video_rating_provider.get_rating(@user, @video['slug'])
-    pass unless @video
     erb :video
   end
 

@@ -7,42 +7,18 @@ class JsonModuleProvider
   end
 
   def get_video(video_id)
-    @phases.each do |phase|
-      phase['topics'].each do |topic|
-        topic['videos'].each do |video|
-          if video["id"] == video_id.to_i
-            @data = {:phase => phase, :video => video}
-          end
-        end
-      end
-    end
-    return @data
+    videos = get_all_videos
+    videos.select { |video| video['id'] == video_id.to_i }.first
   end
 
   def get_next_video(current_video_id)
-    @phases.each do |phase|
-      phase['topics'].each do |topic|
-        topic['videos'].each do |video|
-          if video["id"] == current_video_id.to_i + 1
-            @next_video = video
-          end
-        end
-      end
-    end
-    return @next_video
+    videos = get_all_videos
+    videos.select { |video| video['id'] == current_video_id.to_i + 1 }.first
   end
 
   def get_previous_video(current_video_id)
-    @phases.each do |phase|
-      phase['topics'].each do |topic|
-        topic['videos'].each do |video|
-          if video["id"] == current_video_id.to_i - 1
-            @previous_video = video
-          end
-        end
-      end
-    end
-    return @previous_video
+    videos = get_all_videos
+    videos.select { |video| video['id'] == current_video_id.to_i - 1 }.first
   end
 
   def get_all_videos
@@ -50,6 +26,7 @@ class JsonModuleProvider
     @phases.each do |phase|
       phase['topics'].each do |topic|
         topic['videos'].each do |video|
+          video['phase'] = phase
           videos.push(video)
         end
       end
@@ -68,13 +45,8 @@ class JsonModuleProvider
   end
 
   def get_topic(url_title)
-    selected_topic = nil
-    @phases.each do |phase|
-      phase['topics'].each do |topic|
-        selected_topic = topic if UrlGenerator.to_url(topic['title']) == url_title 
-      end
-    end
-    return selected_topic
+    topics = get_all_topics
+    topics.select { |topic|  UrlGenerator.to_url(topic['title']) == url_title }.first
   end
 
   def get_start_date
