@@ -2,6 +2,7 @@ require 'open-uri'
 require 'json'
 require_relative '../lib/quiz/quizScoreSummary'
 require_relative '../lib/videos/videoSummary.rb'
+require_relative '../lib/videos/overall/video_summary'
 
 class Flippd < Sinatra::Application
   before do
@@ -31,6 +32,7 @@ class Flippd < Sinatra::Application
     @phases = @json_module_provider.get_phases
     @quiz_score_summary = QuizScoreSummary.new(@json_module_provider, @quiz_score_provider)
     @video_summary = VideoSummary.new(@json_module_provider, @video_view_provider)
+    @overall_video_summary = OverallVideoSummary.new(@json_module_provider, @video_view_provider)
     @user_role_provider = UserRoleProvider.new(@json_module_provider)
   end
 

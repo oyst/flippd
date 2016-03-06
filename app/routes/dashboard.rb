@@ -1,6 +1,7 @@
 require_relative '../lib/dashboard/widgets/factories/quizWidget'
 require_relative '../lib/dashboard/widgets/factories/videoGraphWidget'
 require_relative '../lib/dashboard/widgets/factories/videoViewWidget'
+require_relative '../lib/dashboard/widgets/factories/videoViewCountWidget.rb'
 require_relative '../lib/dashboard/dashboard.rb'
 
 class Flippd < Sinatra::Application
@@ -21,6 +22,10 @@ class Flippd < Sinatra::Application
 
   get '/lecturer/dashboard' do
     lecturer!
-    "Hello Lecturer"
+    overall_views = @overall_video_summary.get_views_per_video()
+    video_views_widget = VideoViewCountWidget.create(overall_views)
+    @dashboard = Dashboard.new
+    @dashboard.add(video_views_widget)
+    erb :dashboard
   end
 end
