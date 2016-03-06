@@ -46,6 +46,10 @@ class Flippd < Sinatra::Application
       has_role = @user_role_provider.has_role(@user, 'lecturer')
       halt(401, 'You are not authorized to view this page') unless has_role
     end
+
+    def lecturer?
+      @user_role_provider.has_role(@user, 'lecturer')
+    end
   end
 
   get '/' do
