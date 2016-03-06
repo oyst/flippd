@@ -4,7 +4,7 @@ require_relative '../table/tableColumn.rb'
 class VideoViewCountWidget
   def self.create(data)
     video = TableColumn.new('Video', 'title')
-    views = TableColumn.new('Views', 'views', 'No Views Yet')
+    views = TableColumn.new('Views', 'views')
     columns = [video, views]
     TableWidget.new(columns, data, 'Video Views')
   end
