@@ -98,10 +98,7 @@ class JsonModuleProvider
   end
 
   def get_users_by_role(user_role)
-    users = []
-    @json['user_roles'].each do |role|
-      users = role['users'] if user_role = role['name']
-    end
-    users
+    role_data = @json['user_roles'].select { |role| role['name'] == user_role }.first
+    role_data['users']
   end
 end
