@@ -13,6 +13,6 @@ class VideoViewProvider
   end
 
   def get_views_by_month(user, start_date, end_date)
-    DataMapper.repository.adapter.select("SELECT MONTH(date) as month, count(id) as total_views FROM flippd.views WHERE date > ? and date < ? GROUP BY MONTH(date)", start_date, end_date)
+    DataMapper.repository.adapter.select("SELECT MONTH(date) as month, count(id) as total_views FROM flippd.views WHERE date > ? and date < ? and user_id = ? GROUP BY MONTH(date)", start_date, end_date, user.id)
   end
 end
