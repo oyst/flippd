@@ -10,7 +10,6 @@ class UserRoleProvider
 
   def get_role(user)
       role_data = @module_provider.get_user_roles.find { |role| role['users'].include? user.email }
-      return unless role_data
-      role_data['name']
+      role_data['name'] if role_data
   end
 end

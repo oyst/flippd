@@ -8,11 +8,7 @@
     <tr>
       <% widget.columns.each do |column| %>
         <td>
-          <% if data[column.key] %>
-            <%= data[column.key] %>
-          <% else %>
-            <%= column.empty_message %>
-          <% end %>
+          <%= column.get_cell(data) %>
         </td>
 
       <% end %>
