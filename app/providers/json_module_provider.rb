@@ -8,17 +8,17 @@ class JsonModuleProvider
 
   def get_video(video_id)
     videos = get_all_videos
-    videos.select { |video| video['id'] == video_id.to_i }.first
+    videos.find { |video| video['id'] == video_id.to_i }
   end
 
   def get_next_video(current_video_id)
     videos = get_all_videos
-    videos.select { |video| video['id'] == current_video_id.to_i + 1 }.first
+    videos.find { |video| video['id'] == current_video_id.to_i + 1 }
   end
 
   def get_previous_video(current_video_id)
     videos = get_all_videos
-    videos.select { |video| video['id'] == current_video_id.to_i - 1 }.first
+    videos.find { |video| video['id'] == current_video_id.to_i - 1 }
   end
 
   def get_all_videos
@@ -46,7 +46,7 @@ class JsonModuleProvider
 
   def get_topic(url_title)
     topics = get_all_topics
-    topics.select { |topic|  UrlGenerator.to_url(topic['title']) == url_title }.first
+    topics.find { |topic|  UrlGenerator.to_url(topic['title']) == url_title }
   end
 
   def get_start_date
@@ -70,7 +70,7 @@ class JsonModuleProvider
   end
 
   def get_users_by_role(user_role)
-    role_data = @json['user_roles'].select { |role| role['name'] == user_role }.first
+    role_data = @json['user_roles'].find { |role| role['name'] == user_role }
     role_data['users']
   end
 end
