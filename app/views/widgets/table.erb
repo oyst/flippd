@@ -4,12 +4,12 @@
       <th><%= column.heading %></th>
     <% end %>
   </tr>
-  <% widget.data.each do |topic| %>
+  <% widget.data.each do |data| %>
     <tr>
       <% widget.columns.each do |column| %>
         <td>
-          <% if topic[column.key] %>
-            <%= topic[column.key] %>
+          <% if data[column.key] %>
+            <%= data[column.key] %>
           <% else %>
             <%= column.empty_message %>
           <% end %>
