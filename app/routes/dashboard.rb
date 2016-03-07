@@ -5,13 +5,20 @@ require_relative '../lib/dashboard/widgets/factories/videoViewCountWidget.rb'
 require_relative '../lib/dashboard/dashboard.rb'
 
 class Flippd < Sinatra::Application
-  get '/dashboard' do
+  get '/dashboard/?:id?' do
     protected!
-    scores = @quiz_score_summary.get_score_summary(@user)
+    user = @user
+    if params['id']
+      authorized!(LECTURER_ROLE_NAME)
+      user = User.first(:id => params['id'])
+    end
+    pass unless user
+
+    scores = @quiz_score_summary.get_score_summary(user)
     quiz_table_widget = QuizWidget.create(scores)
-    views = @video_summary.get_videos_by_month(@user)
+    views = @video_summary.get_videos_by_month(user)
     video_graph_widget = VideoGraphWidget.create(views)
-    videos_viewed = @video_summary.get_videos_viewed(@user)
+    videos_viewed = @video_summary.get_videos_viewed(user)
     video_view_widget = VideoViewWidget.create(videos_viewed)
     @dashboard = Dashboard.new
     @dashboard.add(quiz_table_widget)

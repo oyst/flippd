@@ -73,4 +73,8 @@ class JsonModuleProvider
     role_data = @json['user_roles'].find { |role| role['name'] == user_role }
     role_data['users']
   end
+
+  def get_user_roles
+    @json['user_roles']
+  end
 end

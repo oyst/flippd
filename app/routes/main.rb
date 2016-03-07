@@ -60,6 +60,10 @@ class Flippd < Sinatra::Application
     def authorized?(*roles)
       roles.any? { |role| @user_role_provider.has_role(@user, role) }
     end
+
+    def get_role
+      @user_role_provider.get_role(@user)
+    end
   end
 
   get '/' do
