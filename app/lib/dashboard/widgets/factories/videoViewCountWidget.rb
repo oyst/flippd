@@ -1,12 +1,12 @@
 require_relative '../table/tableWidget.rb'
 require_relative '../table/tableColumn.rb'
+require_relative 'decorators/link'
 
 class VideoViewCountWidget
   def self.create(data)
     video = TableColumn.new('Video', 'title')
     views = TableColumn.new('Views', 'views')
-    id_to_link = lambda { |id| "<a href='/videos/" + id.to_s  + "'>Go to video</a>" }
-    link  = TableColumn.new('Link', 'id', '', id_to_link)
+    link  = TableColumn.new('Link', 'id', Link.create('/videos/', 'Go to video'))
     columns = [video, views, link]
     TableWidget.new(columns, data, 'Video Views')
   end
