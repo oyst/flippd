@@ -5,6 +5,8 @@ require_relative '../lib/videos/videoSummary.rb'
 require_relative '../lib/videos/overall/video_summary'
 
 class Flippd < Sinatra::Application
+  LECTURER_ROLE_NAME = "lecturer"
+  PTA_ROLE_NAME = "pta"
   before do
     # Load in the configuration (at the URL in the project's .env file)
     @comment_provider = DbCommentProvider.new
@@ -36,19 +38,27 @@ class Flippd < Sinatra::Application
     @user_role_provider = UserRoleProvider.new(@json_module_provider)
   end
 
+  before '/lecturer/*' do
+    authorized!(LECTURER_ROLE_NAME)
+  end
+
+  before '/pta/*' do
+    authorized!(LECTURER_ROLE_NAME, PTA_ROLE_NAME)
+  end
+
   helpers do
     def protected!
       redirect to('auth/new') unless @user
     end
 
-    def lecturer!
+    def authorized!(*roles)
       redirect to('auth/new') unless @user
-      has_role = @user_role_provider.has_role(@user, 'lecturer')
+      has_role = roles.any? { |role| @user_role_provider.has_role(@user, role) }
       halt(401, 'You are not authorized to view this page') unless has_role
     end
 
-    def lecturer?
-      @user_role_provider.has_role(@user, 'lecturer')
+    def authorized?(*roles)
+      roles.any? { |role| @user_role_provider.has_role(@user, role) }
     end
   end
 

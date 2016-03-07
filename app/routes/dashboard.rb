@@ -21,11 +21,18 @@ class Flippd < Sinatra::Application
   end
 
   get '/lecturer/dashboard' do
-    lecturer!
     overall_views = @overall_video_summary.get_views_per_video()
     video_views_widget = VideoViewCountWidget.create(overall_views)
     @dashboard = Dashboard.new
     @dashboard.add(video_views_widget)
+    erb :dashboard
+  end
+
+  get '/pta/dashboard' do
+    views = @video_summary.get_videos_by_month(@user)
+    video_graph_widget = VideoGraphWidget.create(views)
+    @dashboard = Dashboard.new
+    @dashboard.add(video_graph_widget)
     erb :dashboard
   end
 end
