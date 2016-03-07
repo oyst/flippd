@@ -2,6 +2,7 @@ require_relative '../lib/dashboard/widgets/factories/quizWidget'
 require_relative '../lib/dashboard/widgets/factories/videoGraphWidget'
 require_relative '../lib/dashboard/widgets/factories/videoViewWidget'
 require_relative '../lib/dashboard/widgets/factories/videoViewCountWidget.rb'
+require_relative '../lib/dashboard/widgets/factories/userTableWidget'
 require_relative '../lib/dashboard/dashboard.rb'
 
 class Flippd < Sinatra::Application
@@ -10,7 +11,7 @@ class Flippd < Sinatra::Application
     user = @user
     if params['id']
       authorized!(LECTURER_ROLE_NAME)
-      user = User.first(:id => params['id'])
+      user = @user_provider.get_user_by_id(params['id'])
     end
     pass unless user
 
@@ -30,7 +31,10 @@ class Flippd < Sinatra::Application
   get '/lecturer/dashboard' do
     overall_views = @overall_video_summary.get_views_per_video()
     video_views_widget = VideoViewCountWidget.create(overall_views)
+    users = @user_provider.get_all_users
+    user_table_widget = UserTableWidget.create(users)
     @dashboard = Dashboard.new
+    @dashboard.add(user_table_widget)
     @dashboard.add(video_views_widget)
     erb :dashboard
   end
