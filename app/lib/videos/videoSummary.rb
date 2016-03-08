@@ -15,7 +15,7 @@ class VideoSummary
     date_months = date_range.map {|d| d.month }.uniq
     @views_months = {}
     date_months.each do |month|
-      @views_months[month] = @video_provider.get_views_by_month(user, month, start_date, end_date) or 0
+      @views_months[month] = @video_provider.get_views_by_month(user, month, start_date, end_date)
     end
     @views_months
   end
