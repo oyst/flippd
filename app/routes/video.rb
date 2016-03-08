@@ -1,8 +1,7 @@
 class Flippd < Sinatra::Application
   get '/videos/:id' do
-    @video_data = @json_module_provider.get_video(params['id'])
-    @phase = @video_data[:phase]
-    @video = @video_data[:video]
+    @video = @json_module_provider.get_video(params['id'])
+    @phase = @video['phase']
     @comments = @comment_provider.get_comments(@video['slug'])
     @next_video = @json_module_provider.get_next_video(params['id'])
     @previous_video = @json_module_provider.get_previous_video(params['id'])
