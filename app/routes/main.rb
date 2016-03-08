@@ -37,6 +37,7 @@ class Flippd < Sinatra::Application
     @overall_video_summary = OverallVideoSummary.new(@json_module_provider, @video_view_provider)
     @user_role_provider = UserRoleProvider.new(@json_module_provider)
     @user_provider = UserProvider.new
+    @file_provider = FileSystemProvider.new
   end
 
   before '/lecturer/*' do

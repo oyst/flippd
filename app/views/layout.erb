@@ -36,6 +36,9 @@
             <% if @user %>
               <li><a href="<%= '/' + get_role if get_role %>/dashboard">My Dashboard</a></li>
             <% end %>
+            <% if @user %>
+              <li><a href="/profile">Profile</a></li>
+            <% end %> 
           </ul>
           <ul class="nav navbar-nav navbar-right">
             <% if @user %>
