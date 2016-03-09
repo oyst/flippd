@@ -8,8 +8,7 @@ class FileSystemUploadProvider
     @upload_dir = "/uploads"
   end
 
-  def upload(namespace, tmpfile, filename = nil)
-    filename = Digest::SHA1.hexdigest(filename) unless filename
+  def upload(namespace, tmpfile, filename)
     # Create the namespace directories
     FileUtils.mkdir_p(get_full_path(namespace, nil))
     File.open(get_full_path(namespace, filename), "w") do |f|
