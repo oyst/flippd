@@ -12,7 +12,7 @@
           </option>
         <% end %>
       </select>
-      <% if @correct_questions[question['id']] == true %>
+      <% if @correct_questions.include? question['id'] %>
         Correct
       <% elsif @answers %>
         Incorrect
