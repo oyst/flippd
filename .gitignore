@@ -38,3 +38,6 @@ bower.json
 
 # Ignore environment-specific configuration
 *.env
+
+# Ignore uploaded files
+/app/public/uploads/*
