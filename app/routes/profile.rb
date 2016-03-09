@@ -1,7 +1,8 @@
 class Flippd < Sinatra::Application
   get '/profile' do
     protected!
-    erb :profile, :locals => {:img_src => @profile_image_storer.get_src(@user)}
+    @img_src = @profile_image_storer.get_src(@user)
+    erb :profile
   end
 
   post '/profile/upload' do
