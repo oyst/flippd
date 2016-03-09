@@ -10,23 +10,23 @@ class FileSystemUploadProvider
 
   def upload(namespace, tmpfile, filename)
     # Create the namespace directories
-    FileUtils.mkdir_p(get_full_path(namespace, nil))
-    File.open(get_full_path(namespace, filename), "w") do |f|
+    FileUtils.mkdir_p(get_abs_path(namespace, nil))
+    File.open(get_abs_path(namespace, filename), "w") do |f|
       f.write(tmpfile.read)
     end
     filename
   end
 
-  def get_path(namespace, filename)
+  def get_relative_path(namespace, filename)
     "#{@upload_dir}/#{namespace}/#{filename}"
   end
 
-  def get_full_path(namespace, filename)
-    @publics + get_path(namespace, filename)
+  def get_abs_path(namespace, filename)
+    @publics + get_relative_path(namespace, filename)
   end
 
   def exists?(namespace, filename)
-    File.exists?(get_full_path(namespace, filename))
+    File.exists?(get_abs_path(namespace, filename))
   end
 
 end

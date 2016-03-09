@@ -9,6 +9,6 @@ class ProfileImageStorer
   end
 
   def get_src(user)
-    @upload_provider.get_path(@namespace, user.id) if @upload_provider.exists?(@namespace, user.id)
+    @upload_provider.get_relative_path(@namespace, user.id) if @upload_provider.exists?(@namespace, user.id)
   end
 end
