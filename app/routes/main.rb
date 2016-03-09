@@ -3,6 +3,7 @@ require 'json'
 require_relative '../lib/quiz/quizScoreSummary'
 require_relative '../lib/videos/videoSummary.rb'
 require_relative '../lib/videos/overall/video_summary'
+require_relative '../lib/profile/profile_image_storer'
 
 class Flippd < Sinatra::Application
   LECTURER_ROLE_NAME = "lecturer"
@@ -37,7 +38,8 @@ class Flippd < Sinatra::Application
     @overall_video_summary = OverallVideoSummary.new(@json_module_provider, @video_view_provider)
     @user_role_provider = UserRoleProvider.new(@json_module_provider)
     @user_provider = UserProvider.new
-    @file_provider = FileSystemProvider.new
+    @upload_provider = FileSystemUploadProvider.new
+    @profile_image_storer = ProfileImageStorer.new(@upload_provider)
   end
 
   before '/lecturer/*' do

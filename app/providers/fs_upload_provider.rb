@@ -1,7 +1,7 @@
 require "digest/sha1"
 require "fileutils"
 
-class FileSystemProvider 
+class FileSystemUploadProvider 
 
   def initialize
     @publics = Dir.pwd + "/app/public"
@@ -18,12 +18,12 @@ class FileSystemProvider
     filename
   end
 
-  def retrieve_path(namespace, filename)
+  def get_path(namespace, filename)
     "#{@upload_dir}/#{namespace}/#{filename}"
   end
 
   def get_full_path(namespace, filename)
-    @publics + retrieve_path(namespace, filename)
+    @publics + get_path(namespace, filename)
   end
 
   def exists?(namespace, filename)

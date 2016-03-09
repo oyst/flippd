@@ -1,6 +1,6 @@
 <h1>Profile</h1>
-<% if @file_provider.exists?('profile_image', @user.id) %>
-  <img src='<%=@file_provider.retrieve_path('profile_image', @user.id)%>' height="200" width="200" />
+<% if img_src %>
+  <img src='<%= img_src %>' height="200" width="200" />
 <% else %>
   No image available
 <% end %>
