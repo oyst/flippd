@@ -1,13 +1,8 @@
 class QuizResultProcessor
-  
-  def getResult(questions, submittedQuestions)
-      correctQuestions = {}
-      questions.each do |question|
-        answerId = submittedQuestions[question['id'].to_s]
-        if answerId == question['correctAnswerId'].to_s then
-          correctQuestions[question['id']] = true
-        end
-      end
-      QuizResult.new(correctQuestions)
+
+  def get_result(questions, submitted_questions)
+    correct_questions = questions.select { |question| submitted_questions[question['id'].to_s] == question['correctAnswerId'].to_s }
+    correct_questions = correct_questions.map { |question| question['id'] }
+    QuizResult.new(correct_questions)
   end
 end

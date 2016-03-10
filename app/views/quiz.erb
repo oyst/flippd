@@ -1,5 +1,4 @@
 <div class="quiz">
-  <%= @answerId if @answerId %>
   <% if @score %>
     You scored <%= @score %>
   <% end %>
@@ -13,12 +12,12 @@
           </option>
         <% end %>
       </select>
-      <% if @correctQuestions[question['id']] == true %>
+      <% if @correct_questions.include? question['id'] %>
         Correct
       <% elsif @answers %>
         Incorrect
       <% end %>
-    <% end %> 
+    <% end %>
     <p><input type="submit" value="Submit" /></p>
   </form>
 </div>

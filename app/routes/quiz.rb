@@ -17,12 +17,12 @@ class Flippd < Sinatra::Application
     pass unless @topic
     @questions = @topic['questions']
     pass unless @questions
-    @correctQuestions = {}
+    @correct_questions = []
     if params['question']
       @answers = params['question']
-      quizResult = @quizProcessor.getResult(@questions, @answers)
+      quizResult = @quizProcessor.get_result(@questions, @answers)
       @score = quizResult.score
-      @correctQuestions = quizResult.correctQuestions
+      @correct_questions = quizResult.correctQuestions
     end
     erb :quiz
   end
