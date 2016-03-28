@@ -12,7 +12,7 @@ class Flippd < Sinatra::Application
     pass unless @topic
     @questions = @topic['questions']
     pass unless @questions
-    @correct_questions = {}
+    @correct_questions = []
     if params['question']
       @answers = params['question']
       quiz_result = @quiz_processor.get_result(@questions, @answers)
