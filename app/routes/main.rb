@@ -2,8 +2,12 @@ require 'open-uri'
 require 'json'
 require_relative '../lib/quiz/quizScoreSummary'
 require_relative '../lib/videos/videoSummary.rb'
+require_relative '../lib/videos/overall/video_summary'
+require_relative '../lib/profile/profile_image_storer'
 
 class Flippd < Sinatra::Application
+  LECTURER_ROLE_NAME = "lecturer"
+  PTA_ROLE_NAME = "pta"
   before do
     # Load in the configuration (at the URL in the project's .env file)
     @comment_provider = DbCommentProvider.new
@@ -31,6 +35,39 @@ class Flippd < Sinatra::Application
     @phases = @json_module_provider.get_phases
     @quiz_score_summary = QuizScoreSummary.new(@json_module_provider, @quiz_score_provider)
     @video_summary = VideoSummary.new(@json_module_provider, @video_view_provider)
+    @overall_video_summary = OverallVideoSummary.new(@json_module_provider, @video_view_provider)
+    @user_role_provider = UserRoleProvider.new(@json_module_provider)
+    @user_provider = UserProvider.new
+    @upload_provider = FileSystemUploadProvider.new
+    @profile_image_storer = ProfileImageStorer.new(@upload_provider)
+  end
+
+  before '/lecturer/*' do
+    authorized!(LECTURER_ROLE_NAME)
+  end
+
+  before '/pta/*' do
+    authorized!(LECTURER_ROLE_NAME, PTA_ROLE_NAME)
+  end
+
+  helpers do
+    def protected!
+      redirect to('auth/new') unless @user
+    end
+
+    def authorized!(*roles)
+      redirect to('auth/new') unless @user
+      has_role = roles.any? { |role| @user_role_provider.has_role(@user, role) }
+      halt(401, 'You are not authorized to view this page') unless has_role
+    end
+
+    def authorized?(*roles)
+      roles.any? { |role| @user_role_provider.has_role(@user, role) }
+    end
+
+    def get_role
+      @user_role_provider.get_role(@user)
+    end
   end
 
   get '/' do

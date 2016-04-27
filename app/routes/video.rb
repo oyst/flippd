@@ -1,6 +1,7 @@
 class Flippd < Sinatra::Application
   get '/videos/:id' do
     @video = @json_module_provider.get_video(params['id'])
+    pass unless @video
     @phase = @video['phase']
     @comments = @comment_provider.get_comments(@video['slug'])
     @next_video = @json_module_provider.get_next_video(params['id'])
@@ -13,26 +14,25 @@ class Flippd < Sinatra::Application
     @user_has_viewed = true if @user and @video_view_provider.get_view(@user, @video['slug']) != nil
     @ratings = @json_module_provider.get_ratings
     @user_rating = @video_rating_provider.get_rating(@user, @video['slug'])
-    pass unless @video
     erb :video
   end
 
   post '/video-view' do
-    redirect to('/auth/new') unless @user
+    protected!
     video_id = params['video_id']
     @video_view_provider.add_view(@user, video_id)
     redirect back
   end
 
   post '/remove-video-view' do
-    redirect to('auth/new') unless @user
+    protected!
     video_id = params['video_id']
     @video_view_provider.remove_view(@user, video_id)
     redirect back
   end
 
   post '/video-rate' do
-    redirect to('/auth/new') unless @user
+    protected!
     video_id = params['video_id']
     rating_id = params['rating_id']
     @video_rating_provider.add_rating(@user, video_id, rating_id)

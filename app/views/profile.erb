@@ -1,0 +1,10 @@
+<h1>Profile</h1>
+<% if @img_src %>
+  <img src='<%= @img_src %>' height="200" width="200" />
+<% else %>
+  No image available
+<% end %>
+<form action='profile/upload' method='post' enctype='multipart/form-data'>
+  <input type='file' name='file'>
+  <input type='submit' value='Upload image'>
+</form>

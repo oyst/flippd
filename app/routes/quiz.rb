@@ -7,7 +7,7 @@ class Flippd < Sinatra::Application
   end
 
   route :get, :post, '/topics/:title/questions' do
-    redirect to('auth/new') unless @user
+    protected!
     @topic = @json_module_provider.get_topic(params['title'])
     pass unless @topic
     @questions = @topic['questions']

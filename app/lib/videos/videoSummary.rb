@@ -24,11 +24,7 @@ class VideoSummary
     videos_viewed = []
     @module_provider.get_all_videos.each do |video|
       video_view = @video_provider.get_view(user, video['slug'])
-      if video_view
-        video['viewed'] = 'yes'
-      else
-        video['viewed'] = 'no'
-      end
+      video['viewed'] = video_view != nil
       videos_viewed.push(video)
     end
     return videos_viewed
